@@ -218,7 +218,19 @@ async fn init_registry() -> RwLock<ProviderRegistry> {
     if let Err(e) = load_custom_providers_into_registry(&mut registry) {
         tracing::warn!("Failed to load custom providers: {}", e);
     }
+
+    // Loukri AI CoWork distribution: TokenKey (tokenkey.in) is the only
+    // provider — user-created custom providers are not offered either.
+    apply_distro_provider_filter(&mut registry);
+
     RwLock::new(registry)
+}
+
+/// Restrict the registry to the providers bundled for this distribution.
+/// Called after every registry (re)load so refreshed declarative/custom
+/// providers cannot reintroduce anything outside the bundled set.
+fn apply_distro_provider_filter(registry: &mut ProviderRegistry) {
+    registry.retain_providers(|name| name == "tokenkey");
 }
 
 fn load_custom_providers_into_registry(registry: &mut ProviderRegistry) -> Result<()> {
@@ -245,6 +257,8 @@ pub async fn refresh_custom_providers() -> Result<()> {
         tracing::warn!("Failed to refresh custom providers: {}", e);
         return Err(e);
     }
+
+    apply_distro_provider_filter(&mut registry.write().unwrap());
 
     tracing::info!("Custom providers refreshed");
     Ok(())

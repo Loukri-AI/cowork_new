@@ -15,7 +15,7 @@ import { defineMessages, useIntl } from '../../../i18n';
 const i18n = defineMessages({
   dialogTitle: {
     id: 'goosehintsModal.dialogTitle',
-    defaultMessage: 'Configure Project Hints (.goosehints)',
+    defaultMessage: 'Configure Project Hints (.CoWorkhints)',
   },
   dialogDescription: {
     id: 'goosehintsModal.dialogDescription',
@@ -38,19 +38,19 @@ const i18n = defineMessages({
   },
   helpTextLink: {
     id: 'goosehintsModal.helpTextLink',
-    defaultMessage: 'using .goosehints',
+    defaultMessage: 'using .CoWorkhints',
   },
   errorReading: {
     id: 'goosehintsModal.errorReading',
-    defaultMessage: 'Error reading .goosehints file: {error}',
+    defaultMessage: 'Error reading .CoWorkhints file: {error}',
   },
   fileFound: {
     id: 'goosehintsModal.fileFound',
-    defaultMessage: '.goosehints file found at: {filePath}',
+    defaultMessage: '.CoWorkhints file found at: {filePath}',
   },
   fileCreating: {
     id: 'goosehintsModal.fileCreating',
-    defaultMessage: 'Creating new .goosehints file at: {filePath}',
+    defaultMessage: 'Creating new .CoWorkhints file at: {filePath}',
   },
   placeholder: {
     id: 'goosehintsModal.placeholder',
@@ -74,11 +74,11 @@ const i18n = defineMessages({
   },
   failedToAccess: {
     id: 'goosehintsModal.failedToAccess',
-    defaultMessage: 'Failed to access .goosehints file',
+    defaultMessage: 'Failed to access .CoWorkhints file',
   },
   failedToSave: {
     id: 'goosehintsModal.failedToSave',
-    defaultMessage: 'Failed to save .goosehints file',
+    defaultMessage: 'Failed to save .CoWorkhints file',
   },
   developer: {
     id: 'goosehintsModal.developer',

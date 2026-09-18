@@ -54,6 +54,7 @@ pub(crate) mod declarative_providers {
         scaleway,
         tanzu,
         tensorix,
+        tokenkey,
         together,
         trustedrouter,
         venice,

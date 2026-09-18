@@ -1,5 +1,11 @@
 # AGENTS Instructions
 
+> **Loukri AI CoWork distribution:** this is a branded fork of aaif-goose/goose
+> (pinned at `1e83e89`, 2026-09-18) with TokenKey (tokenkey.in) as the only AI
+> provider. Read [REBRANDING.md](REBRANDING.md) before changing provider
+> registration, branding, theming, or the updater — and keep those constraints
+> intact. Everything below describes upstream goose.
+
 goose is an AI agent framework in Rust with CLI and Electron desktop interfaces.
 
 ## Contribution Workflow

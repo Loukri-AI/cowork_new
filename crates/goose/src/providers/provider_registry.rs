@@ -107,6 +107,15 @@ impl ProviderRegistry {
         }
     }
 
+    /// Keep only the providers whose names match `keep` (used by branded
+    /// distributions that bundle a restricted provider set).
+    pub fn retain_providers<F>(&mut self, keep: F)
+    where
+        F: Fn(&str) -> bool,
+    {
+        self.entries.retain(|name, _| keep(name));
+    }
+
     pub fn register<F>(&mut self, preferred: bool)
     where
         F: ProviderDef + 'static,

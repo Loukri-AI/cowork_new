@@ -27,20 +27,21 @@
   --color-white: #ffffff;
   --color-black: #000000;
 
-  --color-block-teal: #13bbaf;
-  --color-block-orange: #ff4f00;
+  /* Loukri AI CoWork brand accents (Jarvis design language) */
+  --color-block-teal: #2f4a7d;
+  --color-block-orange: #f0a06f;
 
-  --color-neutral-50: #f4f6f7;
-  --color-neutral-100: #e3e6ea;
-  --color-neutral-200: #cbd1d6;
-  --color-neutral-300: #a7b0b9;
-  --color-neutral-400: #878787;
-  --color-neutral-500: #606c7a;
-  --color-neutral-600: #525b68;
-  --color-neutral-700: #474e57;
-  --color-neutral-800: #3f434b;
-  --color-neutral-900: #32353b;
-  --color-neutral-950: #22252a;
+  --color-neutral-50: #fcf6e6;
+  --color-neutral-100: #f6eedb;
+  --color-neutral-200: #e2d5b4;
+  --color-neutral-300: #d5c7a4;
+  --color-neutral-400: #98a1ad;
+  --color-neutral-500: #5b6472;
+  --color-neutral-600: #42506b;
+  --color-neutral-700: #2d3a5c;
+  --color-neutral-800: #1d2a4a;
+  --color-neutral-900: #16203a;
+  --color-neutral-950: #0f172c;
 
   --color-red-100: #ff6b6b;
   --color-red-200: #f94b4b;
@@ -243,49 +244,12 @@
   }
   body {
     @apply text-text-primary;
+    font-family: var(--font-sans);
   }
 }
 
-@font-face {
-  font-family: 'Cash Sans';
-  src:
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Light.woff2)
-      format('woff2'),
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Light.woff) format('woff');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Cash Sans';
-  src:
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Regular.woff2)
-      format('woff2'),
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Regular.woff)
-      format('woff');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Cash Sans';
-  src:
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Medium.woff2)
-      format('woff2'),
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Medium.woff) format('woff');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Cash Sans';
-  src:
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Bold.woff2)
-      format('woff2'),
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Bold.woff) format('woff');
-  font-weight: 700;
-  font-style: normal;
-}
+/* Loukri AI CoWork fonts are bundled via @fontsource-variable packages
+   (imported in renderer.tsx); no remote @font-face needed here. */
 
 /* animations */
 @keyframes appear {

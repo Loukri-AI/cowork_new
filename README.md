@@ -1,63 +1,39 @@
 <div align="center">
 
-# goose
+<img src="ui/desktop/src/images/icon.png" alt="Loukri AI CoWork" width="128"/>
 
-_your native open source AI agent — desktop app, CLI, and API — for code, workflows, and everything in between_
+# Loukri AI CoWork
+
+_an AI workspace for VVIT, powered by [TokenKey](https://tokenkey.in) inference (tokenkey.in) — built on the open-source [goose](https://github.com/aaif-goose/goose) agent_
 
 <p align="center">
   <a href="https://opensource.org/licenses/Apache-2.0"
     ><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg"></a>
-  <a href="https://discord.gg/n8R5VaWDAn"
-    ><img src="https://img.shields.io/discord/1287729918100246654?logo=discord&logoColor=white&label=Join+Us&color=blueviolet" alt="Discord"></a>
-  <a href="https://github.com/aaif-goose/goose/actions/workflows/ci.yml"
-     ><img src="https://img.shields.io/github/actions/workflow/status/aaif-goose/goose/ci.yml?branch=main" alt="CI"></a>
-  <a href="https://insights.linuxfoundation.org/project/goose"><img src="https://insights.linuxfoundation.org/api/badge/health-score?project=goose"></a>
-  <a href="https://repology.org/project/goose-cli/versions"><img src="https://repology.org/badge/tiny-repos/goose-cli.svg" alt="Packaging status"></a>
 </p>
-
-<a href="https://trendshift.io/repositories/25298?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-25298" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/25298" alt="aaif-goose%2Fgoose | Trendshift" width="250" height="55"/></a>
 
 </div>
 
+Loukri AI CoWork is a desktop AI agent that runs locally on your machine — for code, research, writing, automation, and data analysis. It is a branded distribution of goose (Apache-2.0) with **TokenKey (tokenkey.in)** as the only AI service provider.
 
-goose is a general-purpose AI agent that runs on your machine. Not just for code — use it for research, writing, automation, data analysis, or anything you need to get done.
+- Sign in with your own `tk_live_...` TokenKey API key (created in the [TokenKey console](https://tokenkey.in); see the [API docs](https://tokenkey.in/docs))
+- Models: `tk-auto` (recommended default) and `tk-base`
+- Telemetry is disabled by default
+- Jarvis design language: cream `#fcf6e6`, ink `#0f172c`, accent `#f0a06f`, Inter + JetBrains Mono
 
-A native desktop app for macOS, Linux, and Windows. A full CLI for terminal workflows. An API to embed it anywhere. Built in Rust for performance and portability.
+## Build (Windows)
 
-goose works with 15+ providers — Anthropic, OpenAI, Google, Ollama, OpenRouter, Azure, Bedrock, and more. Use API keys or your existing Claude, ChatGPT, or Gemini subscriptions via [ACP](https://goose-docs.ai/docs/guides/acp-providers). Connect to 70+ extensions via the [Model Context Protocol](https://modelcontextprotocol.io/) open standard.
-
-goose is part of the [Agentic AI Foundation (AAIF)](https://aaif.io/) at the Linux Foundation.
-
-# Get started
-
-**[Download the desktop app](https://goose-docs.ai/docs/getting-started/installation)** for macOS, Linux, and Windows.
-
-Or install the CLI:
+See **[REBRANDING.md](REBRANDING.md)** for the full list of changes vs upstream, provider configuration, and build instructions:
 
 ```bash
-curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
+cargo build --release --target x86_64-pc-windows-msvc -p goose-cli --bin goose
+cp target/x86_64-pc-windows-msvc/release/goose.exe ui/desktop/src/bin/
+cd ui && pnpm install && pnpm --filter loukri-cowork make
 ```
 
-# Quick links
-- [Quickstart](https://goose-docs.ai/docs/quickstart)
-- [Installation](https://goose-docs.ai/docs/getting-started/installation)
-- [Tutorials](https://goose-docs.ai/docs/category/tutorials)
-- [Documentation](https://goose-docs.ai/docs/category/getting-started)
-- [Governance](https://github.com/aaif-goose/goose/blob/main/GOVERNANCE.md)
-- [Custom Distributions](https://github.com/aaif-goose/goose/blob/main/CUSTOM_DISTROS.md) — build your own goose distro with preconfigured providers, extensions, and branding
+## Upstream
 
-## Need help?
-- [Diagnostics & Reporting](https://goose-docs.ai/docs/troubleshooting/diagnostics-and-reporting)
-- [Known Issues](https://goose-docs.ai/docs/troubleshooting/known-issues)
+Everything not listed in REBRANDING.md is upstream goose, governed by the [Agentic AI Foundation (AAIF)](https://aaif.io/) at the Linux Foundation:
 
-# a little goose humor 🪿
-
-> Why did the developer choose goose as their AI agent?
-> 
-> Because it always helps them "migrate" their code to production! 🚀
-
-# goose around with us
-- [Discord](https://discord.gg/n8R5VaWDAn)
-- [YouTube](https://www.youtube.com/@goose-oss)
-- [LinkedIn](https://www.linkedin.com/company/goose-oss)
-- [Twitter/X](https://x.com/goose_oss)
+- Upstream README and docs: [goose-docs.ai](https://goose-docs.ai)
+- [Custom Distributions guide](CUSTOM_DISTROS.md) — the upstream playbook this distribution followed
+- Original license preserved in [LICENSE](LICENSE); this distribution indicates its modifications per Apache-2.0 §4

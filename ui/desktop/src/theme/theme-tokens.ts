@@ -33,9 +33,9 @@ type ColorTokenKey = Exclude<McpUiStyleVariableKey, BaseTokenKey>;
 // Base tokens — shared across light and dark themes
 // ---------------------------------------------------------------------------
 const baseTokens: Pick<ThemeTokens, BaseTokenKey> = {
-  // Typography — families
-  '--font-sans': "'Cash Sans', sans-serif",
-  '--font-mono': 'monospace',
+  // Typography — families (Loukri AI CoWork: Inter + JetBrains Mono)
+  '--font-sans': "'Inter Variable', 'Inter', system-ui, sans-serif",
+  '--font-mono': "'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace",
 
   // Typography — weights
   '--font-weight-normal': '400',
@@ -90,114 +90,116 @@ type ColorTokens = Pick<ThemeTokens, ColorTokenKey>;
 
 // ---------------------------------------------------------------------------
 // Light theme — colors & shadows
+// Jarvis light: cream surfaces, ink text, TokenKey apricot accent (#f0a06f)
 // ---------------------------------------------------------------------------
 const lightColorTokens: ColorTokens = {
   // Backgrounds
-  '--color-background-primary': '#ffffff',
-  '--color-background-secondary': '#f4f6f7',
-  '--color-background-tertiary': '#e3e6ea',
-  '--color-background-inverse': '#000000',
+  '--color-background-primary': '#fcf6e6',
+  '--color-background-secondary': '#f6eedb',
+  '--color-background-tertiary': '#efe4c8',
+  '--color-background-inverse': '#0f172c',
   '--color-background-ghost': 'transparent',
-  '--color-background-info': '#5c98f9',
+  '--color-background-info': '#f0a06f',
   '--color-background-danger': '#f94b4b',
   '--color-background-success': '#91cb80',
   '--color-background-warning': '#fbcd44',
-  '--color-background-disabled': '#e3e6ea',
+  '--color-background-disabled': '#efe4c8',
 
   // Text
-  '--color-text-primary': '#3f434b',
-  '--color-text-secondary': '#878787',
-  '--color-text-tertiary': '#a7b0b9',
-  '--color-text-inverse': '#ffffff',
-  '--color-text-ghost': '#878787',
-  '--color-text-info': '#5c98f9',
-  '--color-text-danger': '#f94b4b',
-  '--color-text-success': '#91cb80',
-  '--color-text-warning': '#fbcd44',
-  '--color-text-disabled': '#cbd1d6',
+  '--color-text-primary': '#0f172c',
+  '--color-text-secondary': '#5b6472',
+  '--color-text-tertiary': '#98a1ad',
+  '--color-text-inverse': '#fcf6e6',
+  '--color-text-ghost': '#5b6472',
+  '--color-text-info': '#c96f3b',
+  '--color-text-danger': '#d93b3b',
+  '--color-text-success': '#4e7d3c',
+  '--color-text-warning': '#8a6d0b',
+  '--color-text-disabled': '#c2c4bd',
 
   // Borders
-  '--color-border-primary': '#e3e6ea',
-  '--color-border-secondary': '#e3e6ea',
-  '--color-border-tertiary': '#cbd1d6',
-  '--color-border-inverse': '#000000',
+  '--color-border-primary': '#ece1c6',
+  '--color-border-secondary': '#e2d5b4',
+  '--color-border-tertiary': '#d5c7a4',
+  '--color-border-inverse': '#0f172c',
   '--color-border-ghost': 'transparent',
-  '--color-border-info': '#5c98f9',
+  '--color-border-info': '#f0a06f',
   '--color-border-danger': '#f94b4b',
   '--color-border-success': '#91cb80',
   '--color-border-warning': '#fbcd44',
-  '--color-border-disabled': '#e3e6ea',
+  '--color-border-disabled': '#ece1c6',
 
   // Rings
-  '--color-ring-primary': '#e3e6ea',
-  '--color-ring-secondary': '#cbd1d6',
-  '--color-ring-inverse': '#ffffff',
-  '--color-ring-info': '#5c98f9',
+  '--color-ring-primary': '#e2d5b4',
+  '--color-ring-secondary': '#d5c7a4',
+  '--color-ring-inverse': '#fcf6e6',
+  '--color-ring-info': '#f0a06f',
   '--color-ring-danger': '#f94b4b',
   '--color-ring-success': '#91cb80',
   '--color-ring-warning': '#fbcd44',
 
   // Shadows
-  '--shadow-hairline': '0 0 0 1px rgba(0, 0, 0, 0.05)',
-  '--shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-  '--shadow-md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
-  '--shadow-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+  '--shadow-hairline': '0 0 0 1px rgba(15, 23, 44, 0.06)',
+  '--shadow-sm': '0 1px 2px 0 rgba(15, 23, 44, 0.06)',
+  '--shadow-md': '0 4px 6px -1px rgba(15, 23, 44, 0.1), 0 2px 4px -2px rgba(15, 23, 44, 0.1)',
+  '--shadow-lg': '0 10px 15px -3px rgba(15, 23, 44, 0.1), 0 4px 6px -4px rgba(15, 23, 44, 0.1)',
 };
 
 // ---------------------------------------------------------------------------
 // Dark theme — colors & shadows
+// Jarvis night: ink surfaces, warm cream text, apricot accent
 // ---------------------------------------------------------------------------
 const darkColorTokens: ColorTokens = {
   // Backgrounds
-  '--color-background-primary': '#22252a',
-  '--color-background-secondary': '#3f434b',
-  '--color-background-tertiary': '#474e57',
-  '--color-background-inverse': '#cbd1d6',
+  '--color-background-primary': '#0f172c',
+  '--color-background-secondary': '#16203a',
+  '--color-background-tertiary': '#1d2a4a',
+  '--color-background-inverse': '#fcf6e6',
   '--color-background-ghost': 'transparent',
-  '--color-background-info': '#7cacff',
+  '--color-background-info': '#f0a06f',
   '--color-background-danger': '#ff6b6b',
   '--color-background-success': '#a3d795',
   '--color-background-warning': '#ffd966',
-  '--color-background-disabled': '#474e57',
+  '--color-background-disabled': '#1d2a4a',
 
   // Text
-  '--color-text-primary': '#ffffff',
-  '--color-text-secondary': '#878787',
-  '--color-text-tertiary': '#606c7a',
-  '--color-text-inverse': '#000000',
-  '--color-text-ghost': '#878787',
-  '--color-text-info': '#7cacff',
+  '--color-text-primary': '#f3ead6',
+  '--color-text-secondary': '#9aa4b8',
+  '--color-text-tertiary': '#5d6880',
+  '--color-text-inverse': '#0f172c',
+  '--color-text-ghost': '#9aa4b8',
+  '--color-text-info': '#f0a06f',
   '--color-text-danger': '#ff6b6b',
   '--color-text-success': '#a3d795',
   '--color-text-warning': '#ffd966',
-  '--color-text-disabled': '#525b68',
+  '--color-text-disabled': '#3a4768',
 
   // Borders
-  '--color-border-primary': '#3f434b',
-  '--color-border-secondary': '#525b68',
-  '--color-border-tertiary': '#474e57',
-  '--color-border-inverse': '#ffffff',
+  '--color-border-primary': '#24304e',
+  '--color-border-secondary': '#2d3a5c',
+  '--color-border-tertiary': '#3a4768',
+  '--color-border-inverse': '#fcf6e6',
   '--color-border-ghost': 'transparent',
-  '--color-border-info': '#7cacff',
+  '--color-border-info': '#f0a06f',
   '--color-border-danger': '#ff6b6b',
   '--color-border-success': '#a3d795',
   '--color-border-warning': '#ffd966',
-  '--color-border-disabled': '#3f434b',
+  '--color-border-disabled': '#24304e',
 
   // Rings
-  '--color-ring-primary': '#525b68',
-  '--color-ring-secondary': '#474e57',
-  '--color-ring-inverse': '#000000',
-  '--color-ring-info': '#7cacff',
+  '--color-ring-primary': '#2d3a5c',
+  '--color-ring-secondary': '#3a4768',
+  '--color-ring-inverse': '#0f172c',
+  '--color-ring-info': '#f0a06f',
   '--color-ring-danger': '#ff6b6b',
   '--color-ring-success': '#a3d795',
   '--color-ring-warning': '#ffd966',
 
   // Shadows (darker for dark mode)
-  '--shadow-hairline': '0 0 0 1px rgba(0, 0, 0, 0.2)',
-  '--shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.2)',
-  '--shadow-md': '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2)',
-  '--shadow-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2)',
+  '--shadow-hairline': '0 0 0 1px rgba(0, 0, 0, 0.25)',
+  '--shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.25)',
+  '--shadow-md': '0 4px 6px -1px rgba(0, 0, 0, 0.35), 0 2px 4px -2px rgba(0, 0, 0, 0.25)',
+  '--shadow-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.35), 0 4px 6px -4px rgba(0, 0, 0, 0.25)',
 };
 
 // ---------------------------------------------------------------------------
@@ -296,33 +298,19 @@ export const themes: Record<ThemeId, ThemeDefinition> = {
 // ---------------------------------------------------------------------------
 
 // @font-face rules passed to MCP apps so sandboxed iframes can load host fonts.
+// Inter is bundled with the app; iframes resolve it via a locally installed copy
+// when available and fall back to their own sans-serif otherwise.
 const HOST_FONT_CSS = `
 @font-face {
-  font-family: 'Cash Sans';
-  src: url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Light.woff2) format('woff2'),
-       url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Light.woff) format('woff');
-  font-weight: 300;
+  font-family: 'Inter Variable';
+  src: local('Inter Variable'), local('Inter');
+  font-weight: 100 900;
   font-style: normal;
 }
 @font-face {
-  font-family: 'Cash Sans';
-  src: url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Regular.woff2) format('woff2'),
-       url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Regular.woff) format('woff');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Cash Sans';
-  src: url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Medium.woff2) format('woff2'),
-       url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Medium.woff) format('woff');
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Cash Sans';
-  src: url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Bold.woff2) format('woff2'),
-       url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Bold.woff) format('woff');
-  font-weight: 700;
+  font-family: 'JetBrains Mono Variable';
+  src: local('JetBrains Mono Variable'), local('JetBrains Mono');
+  font-weight: 100 800;
   font-style: normal;
 }
 `.trim();

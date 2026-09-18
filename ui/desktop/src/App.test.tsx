@@ -270,7 +270,7 @@ describe('App Component - Brand New State', () => {
       expect(mockElectron.reactReady).toHaveBeenCalled();
     });
 
-    expect(screen.getByText(/^Welcome to goose/)).toBeInTheDocument();
+    expect(screen.getByText(/^Welcome to Loukri AI CoWork/)).toBeInTheDocument();
   });
 
   it('should not redirect when provider is configured', async () => {
@@ -306,7 +306,7 @@ describe('App Component - Brand New State', () => {
 
     await waitFor(() => {
       expect(mockToastError).toHaveBeenCalledWith(
-        'The connected Goose server does not support securely scoped deeplink recipe parameters. Update the server and try again.'
+        'The connected CoWork server does not support securely scoped deeplink recipe parameters. Update the server and try again.'
       );
     });
     expect(mockNavigate).toHaveBeenCalledWith('/');

@@ -1,6 +1,9 @@
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import { IntlProvider } from 'react-intl';
+// Loukri AI CoWork brand fonts (Jarvis design language)
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
 import { ConfigProvider } from './components/ConfigContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import SuspenseLoader from './suspense-loader';

@@ -10,7 +10,9 @@ export async function getAcpFeatureCapabilities(): Promise<AcpFeatureCapabilitie
   const initializeResponse = await getAcpInitializeResponse();
 
   return {
-    localInference: hasLocalInferenceCapability(initializeResponse),
+    // Loukri AI CoWork distribution: local inference is disabled —
+    // TokenKey (tokenkey.in) is the only provider.
+    localInference: false,
     recipeParameterScopes: hasRecipeParameterScopesCapability(initializeResponse),
   };
 }

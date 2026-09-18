@@ -98,7 +98,7 @@ export const findGooseBinaryPath = (options: FindGooseBinaryOptions = {}): strin
   }
 
   throw new Error(
-    `Goose binary not found in any of the possible paths: ${possiblePaths.join(', ')}`
+    `CoWork binary not found in any of the possible paths: ${possiblePaths.join(', ')}`
   );
 };
 
@@ -318,6 +318,9 @@ const buildGooseServeEnv = (
   }
 
   env.GOOSE_SERVER__SECRET_KEY = serverSecret;
+
+  // Loukri AI CoWork distribution: telemetry is disabled by default
+  env.GOOSE_DISABLE_TELEMETRY = '1';
 
   return env;
 };

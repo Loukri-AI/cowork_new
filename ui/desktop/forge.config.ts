@@ -6,6 +6,7 @@ const isLinuxVulkanBuild = process.env.GOOSE_DESKTOP_LINUX_VARIANT === 'vulkan';
 
 let cfg = {
   asar: true,
+  executableName: 'LoukriCoWork',
   extraResource: ['src/bin', 'src/images', 'src/app-update.yml'],
   icon: 'src/images/icon',
   // Windows specific configuration
@@ -16,10 +17,11 @@ let cfg = {
     rfc3161TimeStampServer: 'http://timestamp.digicert.com',
     signWithParams: '/fd sha256 /tr http://timestamp.digicert.com /td sha256',
   },
-  // Protocol registration
+  // Protocol registration (goose:// scheme kept for compatibility with the
+  // upstream ACP/recipe/deep-link ecosystem)
   protocols: [
     {
-      name: 'GooseProtocol',
+      name: 'CoWorkProtocol',
       schemes: ['goose'],
     },
   ],
@@ -36,9 +38,9 @@ let cfg = {
     ],
     // Usage descriptions for macOS TCC (Transparency, Consent, and Control)
     NSMicrophoneUsageDescription:
-      'Goose needs access to your microphone for voice dictation.',
+      'Loukri AI CoWork needs access to your microphone for voice dictation.',
     NSAppleEventsUsageDescription:
-      'Goose needs access to send Apple Events to control other apps on your behalf.',
+      'Loukri AI CoWork needs access to send Apple Events to control other apps on your behalf.',
   },
 };
 
@@ -65,8 +67,8 @@ module.exports = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: process.env.GITHUB_OWNER || 'aaif-goose',
-          name: process.env.GITHUB_REPO || 'goose',
+          owner: process.env.GITHUB_OWNER || 'Loukri-AI',
+          name: process.env.GITHUB_REPO || 'loukri-cowork',
         },
         prerelease: false,
         draft: true,
@@ -74,6 +76,18 @@ module.exports = {
     },
   ],
   makers: [
+    {
+      name: '@electron-forge/maker-squirrel',
+      platforms: ['win32'],
+      config: {
+        name: 'LoukriCoWork',
+        authors: 'Loukri AI',
+        description: 'Loukri AI CoWork — AI workspace powered by TokenKey',
+        setupExe: 'LoukriAICoWorkSetup.exe',
+        setupIcon: 'src/images/icon.ico',
+        noMsi: true,
+      },
+    },
     {
       name: '@electron-forge/maker-zip',
       platforms: ['darwin', 'win32', 'linux'],

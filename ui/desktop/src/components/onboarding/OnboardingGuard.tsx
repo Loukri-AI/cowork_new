@@ -19,15 +19,15 @@ import { defineMessages, useIntl } from '../../i18n';
 const i18n = defineMessages({
   welcomeTitle: {
     id: 'onboardingGuard.welcomeTitle',
-    defaultMessage: 'Welcome to goose',
+    defaultMessage: 'Welcome to Loukri AI CoWork',
   },
   welcomeDescription: {
     id: 'onboardingGuard.welcomeDescription',
-    defaultMessage: 'Your local AI agent. Connect an AI model provider to get started.',
+    defaultMessage: 'Your AI workspace, powered by TokenKey. Connect with your TokenKey API key to get started.',
   },
   checkProviderErrorTitle: {
     id: 'onboardingGuard.checkProviderErrorTitle',
-    defaultMessage: 'Unable to connect to Goose server',
+    defaultMessage: 'Unable to connect to the CoWork server',
   },
   checkProviderErrorDescription: {
     id: 'onboardingGuard.checkProviderErrorDescription',
