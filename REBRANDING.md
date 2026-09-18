@@ -59,7 +59,7 @@ curated; flip it to `true` to fetch `GET /v1/models` live instead.)
   binary name, config directory (`%APPDATA%\Block\goose`), session partition
   `persist:goose`, and the `.goosehints` convention — renaming these would break
   backend compatibility and shared links for no visible benefit.
-- The update feed points at `Loukri-AI/loukri-cowork` (GitHub). Until that repo
+- The update feed points at `Loukri-AI/cowork_new` (this repository). Until it
   publishes releases with `latest.yml`, update checks simply find nothing — they
   can never pull an upstream goose build over this distribution.
 

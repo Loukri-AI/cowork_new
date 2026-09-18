@@ -68,7 +68,7 @@ module.exports = {
       config: {
         repository: {
           owner: process.env.GITHUB_OWNER || 'Loukri-AI',
-          name: process.env.GITHUB_REPO || 'loukri-cowork',
+          name: process.env.GITHUB_REPO || 'cowork_new',
         },
         prerelease: false,
         draft: true,

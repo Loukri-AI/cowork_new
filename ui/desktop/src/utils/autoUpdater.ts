@@ -343,7 +343,7 @@ export function setupAutoUpdater(tray?: Tray) {
   const feedConfig = {
     provider: 'github' as const,
     owner: process.env.GITHUB_OWNER || 'Loukri-AI',
-    repo: process.env.GITHUB_REPO || 'loukri-cowork',
+    repo: process.env.GITHUB_REPO || 'cowork_new',
     releaseType: 'release' as const,
   };
 

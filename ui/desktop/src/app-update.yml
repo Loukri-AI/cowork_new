@@ -1,4 +1,4 @@
 provider: github
 owner: Loukri-AI
-repo: loukri-cowork
+repo: cowork_new
 updaterCacheDirName: cowork-updater
