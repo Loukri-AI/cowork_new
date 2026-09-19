@@ -130,7 +130,7 @@ jobs:
           if ($isCuda) {
             cargo build --release --target x86_64-pc-windows-msvc -p goose-cli --bin goose --features cuda
           } else {
-            cargo build --release --target x86_64-pc-windows-msvc -p goose-cli --bin goose
+            cargo build --release --target x86_64-pc-windows-msvc -p goose-cli --bin goose --no-default-features --features "code-mode,aws-providers,telemetry,nostr,otel,rustls-tls,live-voice,system-keyring,update"
           }
 
           $binaryPath = "./target/x86_64-pc-windows-msvc/release/goose.exe"
@@ -266,14 +266,19 @@ jobs:
         shell: bash
         run: |
           cd ui/desktop
-          mkdir -p ./out/Goose-win32-x64/resources/bin
-          cp -r src/bin/* out/Goose-win32-x64/resources/bin/
+          APP_OUT="./out/Loukri AI CoWork-win32-x64"
+          mkdir -p "$APP_OUT/resources/bin"
+          cp -r src/bin/* "$APP_OUT/resources/bin/"
 
           mkdir -p ./dist-windows
-          cp -r ./out/Goose-win32-x64/* ./dist-windows/
+          cp -r "$APP_OUT"/* ./dist-windows/
+
+          mkdir -p ./dist-windows-installer
+          cp ./out/make/squirrel.windows/x64/* ./dist-windows-installer/
 
           ls -la ./dist-windows/
           ls -la ./dist-windows/resources/bin/
+          ls -la ./dist-windows-installer/
 
       - name: Upload unsigned distribution
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
@@ -282,6 +287,14 @@ jobs:
           path: ui/desktop/dist-windows/
           if-no-files-found: error
           retention-days: 1
+          overwrite: true
+
+      - name: Upload installer (Squirrel)
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: LoukriCoWork-win32-installer${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
+          path: ui/desktop/dist-windows-installer/
+          if-no-files-found: error
           overwrite: true
 
   sign-desktop-windows:
@@ -313,14 +326,14 @@ jobs:
           trusted-signing-account-name: ${{ secrets.AZURE_SIGNING_ACCOUNT_NAME }}
           certificate-profile-name: ${{ secrets.AZURE_CERTIFICATE_PROFILE_NAME }}
           files: |
-            ${{ github.workspace }}/dist-windows/Goose.exe
+            ${{ github.workspace }}/dist-windows/LoukriCoWork.exe
             ${{ github.workspace }}/dist-windows/resources/bin/goose.exe
 
       - name: Verify signed executables
         shell: pwsh
         run: |
           $files = @(
-            "dist-windows/Goose.exe",
+            "dist-windows/LoukriCoWork.exe",
             "dist-windows/resources/bin/goose.exe"
           )
           foreach ($file in $files) {
@@ -334,13 +347,13 @@ jobs:
         shell: bash
         env:
           VARIANT_SUFFIX: ${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
-        run: 7z a -tzip "Goose-win32-x64${VARIANT_SUFFIX}.zip" dist-windows/
+        run: 7z a -tzip "LoukriCoWork-win32-x64${VARIANT_SUFFIX}.zip" dist-windows/
 
       - name: Upload signed Windows build
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
-          name: Goose-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
-          path: Goose-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}.zip
+          name: LoukriCoWork-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
+          path: LoukriCoWork-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}.zip
           if-no-files-found: error
           overwrite: true
 
@@ -360,12 +373,12 @@ jobs:
         shell: bash
         env:
           VARIANT_SUFFIX: ${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
-        run: 7z a -tzip "Goose-win32-x64${VARIANT_SUFFIX}.zip" dist-windows/
+        run: 7z a -tzip "LoukriCoWork-win32-x64${VARIANT_SUFFIX}.zip" dist-windows/
 
       - name: Upload Windows build
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
-          name: Goose-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
-          path: Goose-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}.zip
+          name: LoukriCoWork-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
+          path: LoukriCoWork-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}.zip
           if-no-files-found: error
           overwrite: true

@@ -65,6 +65,41 @@ curated; flip it to `true` to fetch `GET /v1/models` live instead.)
   publishes releases with `latest.yml`, update checks simply find nothing — they
   can never pull an upstream goose build over this distribution.
 
+## Releasing (CI) — macOS + Windows installers on GitHub Releases
+
+`.github/workflows/cowork-release.yml` builds on a `vX.Y.Z` tag and publishes a
+GitHub Release with fixed asset names. The desktop updater
+(`ui/desktop/src/utils/githubUpdater.ts`, bundle name `LoukriCoWork`) and the
+TokenKey download page (`tokenkey.in/download`, `apps/console/lib/cowork-desktop.ts`
+in the tokenkey repo) both look for exactly these names:
+
+| Asset | What |
+|---|---|
+| `LoukriCoWork.zip` | macOS, Apple silicon (`Loukri AI CoWork.app`) |
+| `LoukriCoWork_intel_mac.zip` | macOS, Intel |
+| `LoukriAICoWorkSetup.exe` | Windows installer (Squirrel) + `RELEASES` + `.nupkg` |
+| `LoukriCoWork-win32-x64.zip` | Windows, portable folder |
+| `latest-mac.yml`, `LoukriCoWork-darwin-{arm64,x64}.zip`, `mac-update-requirements.json` | electron-updater feed for macOS |
+
+```bash
+git tag v1.51.1 && git push origin v1.51.1     # builds + publishes the release
+gh workflow run cowork-release.yml -f version=1.51.1   # artifacts only, no release
+```
+
+- Builds are **unsigned** until the `signing` environment holds the upstream
+  secrets (`APPLE_CERTIFICATE_BASE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_ID`,
+  `APPLE_ID_PASSWORD`, `APPLE_TEAM_ID`; `AZURE_*` for Windows) and the repo
+  variables `COWORK_SIGN_MACOS` / `COWORK_SIGN_WINDOWS` are `true`. Unsigned
+  macOS builds need right-click → Open on first launch; electron-updater on
+  macOS only works for signed builds (the GitHub-API fallback updater still does).
+- While this repository is **private**, release assets and the updater's
+  `api.github.com` calls need a token: set `COWORK_DESKTOP_GITHUB_TOKEN` in the
+  tokenkey deploy `.env` so `/download` can serve them; the in-app updater will
+  find nothing until the repo is public. Making the repo public also lifts the
+  free-plan Actions minute cap (macOS runners bill at 10× on private repos).
+- The upstream `release.yml` (Linux/Docker/npm) is `workflow_dispatch`-only here
+  so a `v*` tag does not run two pipelines.
+
 ## Building for Windows (local)
 
 Requirements: Node ≥ 24.10, pnpm ≥ 10.30, Rust (pinned 1.96.1 via rust-toolchain.toml),

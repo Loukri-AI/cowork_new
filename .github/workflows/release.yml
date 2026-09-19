@@ -1,12 +1,9 @@
 # This workflow builds release artifacts for release branches and publishes tagged releases.
+# Loukri AI CoWork: the upstream release pipeline (Linux, Docker, npm) is
+# not used by this distribution. Tagged releases are built by
+# cowork-release.yml instead; this stays runnable by hand only.
 on:
-  push:
-    paths-ignore:
-      - "documentation/**"
-    branches:
-      - "release/*"
-    tags:
-      - "v1.*"
+  workflow_dispatch:
 
 name: Release
 
