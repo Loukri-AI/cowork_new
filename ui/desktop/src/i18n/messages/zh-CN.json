@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "正在生成深层链接…"
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "了解更多"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "配方保存并启动成功"
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "为你的项目提供额外上下文，改善与 CoWork 的沟通"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "配置项目提示（.CoWorkhints）"
+    "defaultMessage": "配置项目提示（.goosehints）"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": "读取 .CoWorkhints 文件出错：{error}"
+    "defaultMessage": "读取 .goosehints 文件出错：{error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": "访问 .CoWorkhints 文件失败"
+    "defaultMessage": "访问 .goosehints 文件失败"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": "保存 .CoWorkhints 文件失败"
+    "defaultMessage": "保存 .goosehints 文件失败"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "正在创建新的 .CoWorkhints 文件：{filePath}"
+    "defaultMessage": "正在创建新的 .goosehints 文件：{filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": "已找到 .CoWorkhints 文件：{filePath}"
+    "defaultMessage": "已找到 .goosehints 文件：{filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints 是一个文本文件，用于为你的项目提供额外上下文，改善与 CoWork 的沟通。"
+    "defaultMessage": ".goosehints 是一个文本文件，用于为你的项目提供额外上下文，改善与 CoWork 的沟通。"
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "请确认已在扩展页面启用 {bold} 扩展。此扩展是使用 .CoWorkhints 所必需的。你需要重启会话，.CoWorkhints 的更新才会生效。"
+    "defaultMessage": "请确认已在扩展页面启用 {bold} 扩展。此扩展是使用 .goosehints 所必需的。你需要重启会话，.goosehints 的更新才会生效。"
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "更多信息请参见 {link}。"
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "使用 .CoWorkhints"
+    "defaultMessage": "使用 .goosehints"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "在此输入项目提示…"
@@ -1314,10 +1311,10 @@
     "defaultMessage": "配置"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "配置项目的 .CoWorkhints 文件，为 CoWork 提供额外上下文"
+    "defaultMessage": "配置项目的 .goosehints 文件，为 CoWork 提供额外上下文"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "项目提示（.CoWorkhints）"
+    "defaultMessage": "项目提示（.goosehints）"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "问问 CoWork"

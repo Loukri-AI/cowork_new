@@ -15,17 +15,17 @@ import { defineMessages, useIntl } from '../../../i18n';
 const i18n = defineMessages({
   dialogTitle: {
     id: 'goosehintsModal.dialogTitle',
-    defaultMessage: 'Configure Project Hints (.CoWorkhints)',
+    defaultMessage: 'Configure Project Hints (.goosehints)',
   },
   dialogDescription: {
     id: 'goosehintsModal.dialogDescription',
     defaultMessage:
-      'Provide additional context about your project to improve communication with Goose',
+      'Provide additional context about your project to improve communication with CoWork',
   },
   helpText1: {
     id: 'goosehintsModal.helpText1',
     defaultMessage:
-      '.goosehints is a text file used to provide additional context about your project and improve the communication with Goose.',
+      '.goosehints is a text file used to provide additional context about your project and improve the communication with CoWork.',
   },
   helpText2: {
     id: 'goosehintsModal.helpText2',
@@ -38,19 +38,19 @@ const i18n = defineMessages({
   },
   helpTextLink: {
     id: 'goosehintsModal.helpTextLink',
-    defaultMessage: 'using .CoWorkhints',
+    defaultMessage: 'using .goosehints',
   },
   errorReading: {
     id: 'goosehintsModal.errorReading',
-    defaultMessage: 'Error reading .CoWorkhints file: {error}',
+    defaultMessage: 'Error reading .goosehints file: {error}',
   },
   fileFound: {
     id: 'goosehintsModal.fileFound',
-    defaultMessage: '.CoWorkhints file found at: {filePath}',
+    defaultMessage: '.goosehints file found at: {filePath}',
   },
   fileCreating: {
     id: 'goosehintsModal.fileCreating',
-    defaultMessage: 'Creating new .CoWorkhints file at: {filePath}',
+    defaultMessage: 'Creating new .goosehints file at: {filePath}',
   },
   placeholder: {
     id: 'goosehintsModal.placeholder',
@@ -74,11 +74,11 @@ const i18n = defineMessages({
   },
   failedToAccess: {
     id: 'goosehintsModal.failedToAccess',
-    defaultMessage: 'Failed to access .CoWorkhints file',
+    defaultMessage: 'Failed to access .goosehints file',
   },
   failedToSave: {
     id: 'goosehintsModal.failedToSave',
-    defaultMessage: 'Failed to save .CoWorkhints file',
+    defaultMessage: 'Failed to save .goosehints file',
   },
   developer: {
     id: 'goosehintsModal.developer',
@@ -100,18 +100,7 @@ const HelpText = () => {
       <p>
         {intl.formatMessage(i18n.helpText3, {
           link: (
-            <Button
-              variant="link"
-              className="text-blue-500 hover:text-blue-600 p-0 h-auto"
-              onClick={() =>
-                window.open(
-                  'https://goose-docs.ai/docs/guides/using-goosehints/',
-                  '_blank'
-                )
-              }
-            >
-              {intl.formatMessage(i18n.helpTextLink)}
-            </Button>
+            <span className="font-bold">{intl.formatMessage(i18n.helpTextLink)}</span>
           ),
         })}
       </p>

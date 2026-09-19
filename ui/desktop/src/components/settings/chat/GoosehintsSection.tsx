@@ -7,7 +7,7 @@ import { defineMessages, useIntl } from '../../../i18n';
 const i18n = defineMessages({
   title: {
     id: 'goosehintsSection.title',
-    defaultMessage: 'Project Hints (.CoWorkhints)',
+    defaultMessage: 'Project Hints (.goosehints)',
   },
   description: {
     id: 'goosehintsSection.description',

@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "Generazione del deeplink..."
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "Scopri di più"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Ricetta salvata e avviata correttamente"
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "Fornisci ulteriore contesto sul tuo progetto per migliorare la comunicazione con CoWork"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "Configura i suggerimenti del progetto (.CoWorkhints)"
+    "defaultMessage": "Configura i suggerimenti del progetto (.goosehints)"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": "Errore durante la lettura del file .CoWorkhints: {error}"
+    "defaultMessage": "Errore durante la lettura del file .goosehints: {error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": "Impossibile accedere al file .CoWorkhints"
+    "defaultMessage": "Impossibile accedere al file .goosehints"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": "Impossibile salvare il file .CoWorkhints"
+    "defaultMessage": "Impossibile salvare il file .goosehints"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "Creazione di un nuovo file .CoWorkhints in: {filePath}"
+    "defaultMessage": "Creazione di un nuovo file .goosehints in: {filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": "File .CoWorkhints trovato in: {filePath}"
+    "defaultMessage": "File .goosehints trovato in: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints è un file di testo usato per fornire ulteriore contesto sul tuo progetto e migliorare la comunicazione con CoWork."
+    "defaultMessage": ".goosehints è un file di testo usato per fornire ulteriore contesto sul tuo progetto e migliorare la comunicazione con CoWork."
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "Assicurati che l'estensione {bold} sia abilitata nella pagina delle estensioni. Questa estensione è necessaria per usare .CoWorkhints. Dovrai riavviare la sessione affinché gli aggiornamenti di .CoWorkhints abbiano effetto."
+    "defaultMessage": "Assicurati che l'estensione {bold} sia abilitata nella pagina delle estensioni. Questa estensione è necessaria per usare .goosehints. Dovrai riavviare la sessione affinché gli aggiornamenti di .goosehints abbiano effetto."
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "Consulta {link} per maggiori informazioni."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "uso di .CoWorkhints"
+    "defaultMessage": "uso di .goosehints"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Inserisci qui i suggerimenti del progetto..."
@@ -1314,10 +1311,10 @@
     "defaultMessage": "Configura"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Configura il file .CoWorkhints del tuo progetto per fornire ulteriore contesto a CoWork"
+    "defaultMessage": "Configura il file .goosehints del tuo progetto per fornire ulteriore contesto a CoWork"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "Suggerimenti del progetto (.CoWorkhints)"
+    "defaultMessage": "Suggerimenti del progetto (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "Chiedi a CoWork"

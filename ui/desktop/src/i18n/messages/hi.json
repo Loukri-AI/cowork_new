@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "डीपलिंक जनरेट किया जा रहा है..."
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "और जानें"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "रेसिपी सहेजी गई और सफलतापूर्वक लॉन्च की गई"
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "CoWork के साथ संचार को बेहतर बनाने के लिए अपने प्रोजेक्ट के बारे में अतिरिक्त संदर्भ प्रदान करें"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "प्रोजेक्ट संकेत कॉन्फ़िगर करें (.CoWorkhints)"
+    "defaultMessage": "प्रोजेक्ट संकेत कॉन्फ़िगर करें (.goosehints)"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": ".CoWorkhints फ़ाइल पढ़ने में त्रुटि: {error}"
+    "defaultMessage": ".goosehints फ़ाइल पढ़ने में त्रुटि: {error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": ".CoWorkhints फ़ाइल तक पहुँचने में विफल"
+    "defaultMessage": ".goosehints फ़ाइल तक पहुँचने में विफल"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": ".CoWorkhints फ़ाइल सहेजने में विफल"
+    "defaultMessage": ".goosehints फ़ाइल सहेजने में विफल"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "नई .CoWorkhints फ़ाइल यहां बनाई जा रही है: {filePath}"
+    "defaultMessage": "नई .goosehints फ़ाइल यहां बनाई जा रही है: {filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": ".CoWorkhints फ़ाइल यहां मिली: {filePath}"
+    "defaultMessage": ".goosehints फ़ाइल यहां मिली: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints एक टेक्स्ट फ़ाइल है जिसका उपयोग आपके प्रोजेक्ट के बारे में अतिरिक्त संदर्भ प्रदान करने और CoWork के साथ संचार को बेहतर बनाने के लिए किया जाता है।"
+    "defaultMessage": ".goosehints एक टेक्स्ट फ़ाइल है जिसका उपयोग आपके प्रोजेक्ट के बारे में अतिरिक्त संदर्भ प्रदान करने और CoWork के साथ संचार को बेहतर बनाने के लिए किया जाता है।"
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "कृपया सुनिश्चित करें कि एक्सटेंशन पृष्ठ में {bold} एक्सटेंशन सक्षम है। .CoWorkhints का उपयोग करने के लिए यह एक्सटेंशन आवश्यक है। .CoWorkhints अपडेट को प्रभावी बनाने के लिए आपको अपना सत्र पुनः आरंभ करना होगा।"
+    "defaultMessage": "कृपया सुनिश्चित करें कि एक्सटेंशन पृष्ठ में {bold} एक्सटेंशन सक्षम है। .goosehints का उपयोग करने के लिए यह एक्सटेंशन आवश्यक है। .goosehints अपडेट को प्रभावी बनाने के लिए आपको अपना सत्र पुनः आरंभ करना होगा।"
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "अधिक जानकारी के लिए {link} देखें।"
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": ".CoWorkhints का उपयोग करना"
+    "defaultMessage": ".goosehints का उपयोग करना"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "प्रोजेक्ट संकेत यहां दर्ज करें..."
@@ -1314,10 +1311,10 @@
     "defaultMessage": "कॉन्फ़िगर करें"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "CoWork को अतिरिक्त संदर्भ प्रदान करने के लिए अपने प्रोजेक्ट की .CoWorkhints फ़ाइल को कॉन्फ़िगर करें"
+    "defaultMessage": "CoWork को अतिरिक्त संदर्भ प्रदान करने के लिए अपने प्रोजेक्ट की .goosehints फ़ाइल को कॉन्फ़िगर करें"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "प्रोजेक्ट संकेत (.CoWorkhints)"
+    "defaultMessage": "प्रोजेक्ट संकेत (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "पूछें CoWork"

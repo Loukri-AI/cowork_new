@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "Derin bağlantı oluşturuluyor..."
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "Daha fazla bilgi edinin"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Tarif başarıyla kaydedildi ve başlatıldı"
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "CoWork ile iletişimi geliştirmek için projeniz hakkında ek bağlam sağlayın"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "Proje İpuçlarını Yapılandırma (.CoWorkhints)"
+    "defaultMessage": "Proje İpuçlarını Yapılandırma (.goosehints)"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": ".CoWorkhints dosyası okunurken hata oluştu: {error}"
+    "defaultMessage": ".goosehints dosyası okunurken hata oluştu: {error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": ".CoWorkhints dosyasına erişilemedi"
+    "defaultMessage": ".goosehints dosyasına erişilemedi"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": ".CoWorkhints dosyası kaydedilemedi"
+    "defaultMessage": ".goosehints dosyası kaydedilemedi"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "Şu konumda yeni.CoWorkhints dosyası oluşturuluyor: {filePath}"
+    "defaultMessage": "Şu konumda yeni.goosehints dosyası oluşturuluyor: {filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": ".CoWorkhints dosyası şu konumda bulundu: {filePath}"
+    "defaultMessage": ".goosehints dosyası şu konumda bulundu: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints, projeniz hakkında ek bağlam sağlamak ve CoWork ile iletişimi geliştirmek için kullanılan bir metin dosyasıdır."
+    "defaultMessage": ".goosehints, projeniz hakkında ek bağlam sağlamak ve CoWork ile iletişimi geliştirmek için kullanılan bir metin dosyasıdır."
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "Lütfen uzantılar sayfasında {bold} uzantısının etkinleştirildiğinden emin olun. Bu uzantı.CoWorkhints'i kullanmak için gereklidir..CoWorkhints güncellemelerinin etkili olması için oturumunuzu yeniden başlatmanız gerekir."
+    "defaultMessage": "Lütfen uzantılar sayfasında {bold} uzantısının etkinleştirildiğinden emin olun. Bu uzantı.goosehints'i kullanmak için gereklidir..goosehints güncellemelerinin etkili olması için oturumunuzu yeniden başlatmanız gerekir."
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "Daha fazla bilgi için {link}'ye bakın."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": ".CoWorkhints'i kullanma"
+    "defaultMessage": ".goosehints'i kullanma"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Proje ipuçlarını buraya girin..."
@@ -1314,10 +1311,10 @@
     "defaultMessage": "Yapılandır"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "CoWork'a ek bağlam sağlamak için projenizin.CoWorkhints dosyasını yapılandırın"
+    "defaultMessage": "CoWork'a ek bağlam sağlamak için projenizin.goosehints dosyasını yapılandırın"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "Proje İpuçları (.CoWorkhints)"
+    "defaultMessage": "Proje İpuçları (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "CoWork'a sorun"

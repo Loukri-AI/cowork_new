@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "正在產生深層連結…"
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "瞭解更多"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "食譜已成功儲存並啟動"
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "提供有關您專案的額外內容，以改善與 CoWork 的溝通"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "設定專案提示 (.CoWorkhints)"
+    "defaultMessage": "設定專案提示 (.goosehints)"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": "讀取 .CoWorkhints 檔案時發生錯誤：{error}"
+    "defaultMessage": "讀取 .goosehints 檔案時發生錯誤：{error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": "無法存取 .CoWorkhints 檔案"
+    "defaultMessage": "無法存取 .goosehints 檔案"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": "無法儲存 .CoWorkhints 檔案"
+    "defaultMessage": "無法儲存 .goosehints 檔案"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "正在於此處建立新的 .CoWorkhints 檔案：{filePath}"
+    "defaultMessage": "正在於此處建立新的 .goosehints 檔案：{filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": "在此處找到 .CoWorkhints 檔案：{filePath}"
+    "defaultMessage": "在此處找到 .goosehints 檔案：{filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints 是一個文字檔，用於提供有關您專案的額外內容，並改善與 CoWork 的溝通。"
+    "defaultMessage": ".goosehints 是一個文字檔，用於提供有關您專案的額外內容，並改善與 CoWork 的溝通。"
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "請確認擴充功能頁面中已啟用 {bold} 擴充功能。使用 .CoWorkhints 需要此擴充功能。您需要重新啟動工作階段，.CoWorkhints 的更新才會生效。"
+    "defaultMessage": "請確認擴充功能頁面中已啟用 {bold} 擴充功能。使用 .goosehints 需要此擴充功能。您需要重新啟動工作階段，.goosehints 的更新才會生效。"
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "如需更多資訊，請參閱 {link}。"
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "使用 .CoWorkhints"
+    "defaultMessage": "使用 .goosehints"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "在此輸入專案提示…"
@@ -1314,10 +1311,10 @@
     "defaultMessage": "設定"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "設定您專案的 .CoWorkhints 檔案，為 CoWork 提供額外內容"
+    "defaultMessage": "設定您專案的 .goosehints 檔案，為 CoWork 提供額外內容"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "專案提示 (.CoWorkhints)"
+    "defaultMessage": "專案提示 (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "詢問 CoWork"

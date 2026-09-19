@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "ディープリンクを生成中..."
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "詳しく見る"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "レシピを保存して起動しました"
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "CoWork とのコミュニケーションを改善するために、プロジェクトに関する追加コンテキストを提供します"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "プロジェクトヒントを設定（.CoWorkhints）"
+    "defaultMessage": "プロジェクトヒントを設定（.goosehints）"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": ".CoWorkhints ファイルの読み取りエラー: {error}"
+    "defaultMessage": ".goosehints ファイルの読み取りエラー: {error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": ".CoWorkhints ファイルにアクセスできませんでした"
+    "defaultMessage": ".goosehints ファイルにアクセスできませんでした"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": ".CoWorkhints ファイルの保存に失敗しました"
+    "defaultMessage": ".goosehints ファイルの保存に失敗しました"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "新しい .CoWorkhints ファイルを作成しています: {filePath}"
+    "defaultMessage": "新しい .goosehints ファイルを作成しています: {filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": ".CoWorkhints ファイルが見つかりました: {filePath}"
+    "defaultMessage": ".goosehints ファイルが見つかりました: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints は、プロジェクトに関する追加コンテキストを提供し、CoWork とのコミュニケーションを改善するためのテキストファイルです。"
+    "defaultMessage": ".goosehints は、プロジェクトに関する追加コンテキストを提供し、CoWork とのコミュニケーションを改善するためのテキストファイルです。"
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "拡張機能ページで {bold} 拡張機能が有効になっていることを確認してください。この拡張機能は .CoWorkhints を使用するために必要です。.CoWorkhints の更新を反映するにはセッションの再起動が必要です。"
+    "defaultMessage": "拡張機能ページで {bold} 拡張機能が有効になっていることを確認してください。この拡張機能は .goosehints を使用するために必要です。.goosehints の更新を反映するにはセッションの再起動が必要です。"
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "詳しくは {link} をご覧ください。"
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": ".CoWorkhints の使い方"
+    "defaultMessage": ".goosehints の使い方"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "プロジェクトヒントをここに入力..."
@@ -1314,10 +1311,10 @@
     "defaultMessage": "設定"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "CoWork に追加コンテキストを提供するために、プロジェクトの .CoWorkhints ファイルを設定します"
+    "defaultMessage": "CoWork に追加コンテキストを提供するために、プロジェクトの .goosehints ファイルを設定します"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "プロジェクトヒント（.CoWorkhints）"
+    "defaultMessage": "プロジェクトヒント（.goosehints）"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "CoWorkに聞く"

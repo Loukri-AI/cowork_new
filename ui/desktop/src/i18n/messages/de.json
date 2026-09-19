@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "Deeplink wird generiert..."
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "Mehr erfahren"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Rezept erfolgreich gespeichert und gestartet"
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "Stellen Sie zusätzlichen Kontext zu Ihrem Projekt bereit, um die Kommunikation mit CoWork zu verbessern"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "Projekt-Hinweise konfigurieren (.CoWorkhints)"
+    "defaultMessage": "Projekt-Hinweise konfigurieren (.goosehints)"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": "Fehler beim Lesen der .CoWorkhints-Datei: {error}"
+    "defaultMessage": "Fehler beim Lesen der .goosehints-Datei: {error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": "Zugriff auf die .CoWorkhints-Datei fehlgeschlagen"
+    "defaultMessage": "Zugriff auf die .goosehints-Datei fehlgeschlagen"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": "Speichern der .CoWorkhints-Datei fehlgeschlagen"
+    "defaultMessage": "Speichern der .goosehints-Datei fehlgeschlagen"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "Neue .CoWorkhints-Datei wird erstellt unter: {filePath}"
+    "defaultMessage": "Neue .goosehints-Datei wird erstellt unter: {filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": ".CoWorkhints-Datei gefunden unter: {filePath}"
+    "defaultMessage": ".goosehints-Datei gefunden unter: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints ist eine Textdatei, mit der zusätzlicher Kontext zu Ihrem Projekt bereitgestellt und die Kommunikation mit CoWork verbessert wird."
+    "defaultMessage": ".goosehints ist eine Textdatei, mit der zusätzlicher Kontext zu Ihrem Projekt bereitgestellt und die Kommunikation mit CoWork verbessert wird."
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "Bitte stellen Sie sicher, dass die Erweiterung {bold} auf der Erweiterungsseite aktiviert ist. Diese Erweiterung ist erforderlich, um .CoWorkhints zu verwenden. Sie müssen Ihre Sitzung neu starten, damit Aktualisierungen an .CoWorkhints wirksam werden."
+    "defaultMessage": "Bitte stellen Sie sicher, dass die Erweiterung {bold} auf der Erweiterungsseite aktiviert ist. Diese Erweiterung ist erforderlich, um .goosehints zu verwenden. Sie müssen Ihre Sitzung neu starten, damit Aktualisierungen an .goosehints wirksam werden."
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "Weitere Informationen finden Sie unter {link}."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": ".CoWorkhints verwenden"
+    "defaultMessage": ".goosehints verwenden"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Projekt-Hinweise hier eingeben..."
@@ -1314,10 +1311,10 @@
     "defaultMessage": "Konfigurieren"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Konfigurieren Sie die .CoWorkhints-Datei Ihres Projekts, um CoWork zusätzlichen Kontext bereitzustellen"
+    "defaultMessage": "Konfigurieren Sie die .goosehints-Datei Ihres Projekts, um CoWork zusätzlichen Kontext bereitzustellen"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "Projekt-Hinweise (.CoWorkhints)"
+    "defaultMessage": "Projekt-Hinweise (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "CoWork fragen"

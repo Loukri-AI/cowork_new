@@ -48,7 +48,7 @@
     "defaultMessage": "Delete \"{name}\"? This cannot be undone."
   },
   "appsView.description": {
-    "defaultMessage": "Applications from your MCP servers and Apps built by goose itself. You can ask it to create new apps through the chat interface and they will appear here."
+    "defaultMessage": "Applications from your MCP servers and Apps built by CoWork itself. You can ask it to create new apps through the chat interface and they will appear here."
   },
   "appsView.errorLoading": {
     "defaultMessage": "Error loading apps: {error}"
@@ -246,7 +246,7 @@
     "defaultMessage": "Waiting for images to save..."
   },
   "chatSettings.modeDescription": {
-    "defaultMessage": "Choose the default mode Goose uses for new sessions. Existing sessions keep their current mode."
+    "defaultMessage": "Choose the default mode CoWork uses for new sessions. Existing sessions keep their current mode."
   },
   "chatSettings.modeTitle": {
     "defaultMessage": "Default Mode"
@@ -388,9 +388,6 @@
   },
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "Generating deeplink..."
-  },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "Learn more"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Recipe saved and launched successfully"
@@ -1218,7 +1215,7 @@
     "defaultMessage": "AA:BB:CC:... or sha256/base64"
   },
   "externalBackendSection.description": {
-    "defaultMessage": "By default Goose starts a local backend. Use this to connect to an external ACP-compatible backend."
+    "defaultMessage": "By default CoWork starts a local backend. Use this to connect to an external ACP-compatible backend."
   },
   "externalBackendSection.fingerprintRequiresHttps": {
     "defaultMessage": "Certificate fingerprint requires an https URL"
@@ -1239,7 +1236,7 @@
     "defaultMessage": "Backend Base URL"
   },
   "externalBackendSection.serverUrlHelp": {
-    "defaultMessage": "Enter the HTTP(S) base URL. Goose checks /status and connects to /acp under this base."
+    "defaultMessage": "Enter the HTTP(S) base URL. CoWork checks /status and connects to /acp under this base."
   },
   "externalBackendSection.title": {
     "defaultMessage": "External Backend (ACP)"
@@ -1287,28 +1284,28 @@
     "defaultMessage": "Developer"
   },
   "goosehintsModal.dialogDescription": {
-    "defaultMessage": "Provide additional context about your project to improve communication with Goose"
+    "defaultMessage": "Provide additional context about your project to improve communication with CoWork"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "Configure Project Hints (.CoWorkhints)"
+    "defaultMessage": "Configure Project Hints (.goosehints)"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": "Error reading .CoWorkhints file: {error}"
+    "defaultMessage": "Error reading .goosehints file: {error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": "Failed to access .CoWorkhints file"
+    "defaultMessage": "Failed to access .goosehints file"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": "Failed to save .CoWorkhints file"
+    "defaultMessage": "Failed to save .goosehints file"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "Creating new .CoWorkhints file at: {filePath}"
+    "defaultMessage": "Creating new .goosehints file at: {filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": ".CoWorkhints file found at: {filePath}"
+    "defaultMessage": ".goosehints file found at: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".goosehints is a text file used to provide additional context about your project and improve the communication with Goose."
+    "defaultMessage": ".goosehints is a text file used to provide additional context about your project and improve the communication with CoWork."
   },
   "goosehintsModal.helpText2": {
     "defaultMessage": "Please make sure {bold} extension is enabled in the extensions page. This extension is required to use .goosehints. You'll need to restart your session for .goosehints updates to take effect."
@@ -1317,7 +1314,7 @@
     "defaultMessage": "See {link} for more information."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "using .CoWorkhints"
+    "defaultMessage": "using .goosehints"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Enter project hints here..."
@@ -1338,7 +1335,7 @@
     "defaultMessage": "Configure your project's .goosehints file to provide additional context to Goose"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "Project Hints (.CoWorkhints)"
+    "defaultMessage": "Project Hints (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "Ask CoWork"
@@ -1722,7 +1719,7 @@
     "defaultMessage": "Reset to Defaults"
   },
   "keyboardShortcuts.restartDescription": {
-    "defaultMessage": "Changes to application shortcuts (like New Chat, Settings, etc.) require restarting Goose to take effect. Global shortcuts (Focus Window, Quick Launcher) work immediately."
+    "defaultMessage": "Changes to application shortcuts (like New Chat, Settings, etc.) require restarting CoWork to take effect. Global shortcuts (Focus Window, Quick Launcher) work immediately."
   },
   "keyboardShortcuts.restartRequired": {
     "defaultMessage": "Restart Required"
@@ -4197,7 +4194,7 @@
     "defaultMessage": "Notifications"
   },
   "settings.preventSleep.description": {
-    "defaultMessage": "Keep your computer awake while goose is running a task (screen can still lock)"
+    "defaultMessage": "Keep your computer awake while CoWork is running a task (screen can still lock)"
   },
   "settings.preventSleep.title": {
     "defaultMessage": "Prevent Sleep"
@@ -4527,7 +4524,7 @@
     "defaultMessage": "Use other provider"
   },
   "telemetryConsentPrompt.description": {
-    "defaultMessage": "Would you like to share anonymous usage data to help improve goose? We never collect your conversations, code, or personal data."
+    "defaultMessage": "Would you like to share anonymous usage data to help improve CoWork? We never collect your conversations, code, or personal data."
   },
   "telemetryConsentPrompt.heading": {
     "defaultMessage": "Help improve CoWork"

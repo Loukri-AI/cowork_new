@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "Создание диплинка..."
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "Подробнее"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Рецепт успешно сохранен и запущен"
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "Предоставьте дополнительный контекст о проекте, чтобы улучшить взаимодействие с CoWork"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "Настроить подсказки проекта (.CoWorkhints)"
+    "defaultMessage": "Настроить подсказки проекта (.goosehints)"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": "Ошибка чтения файла .CoWorkhints: {error}"
+    "defaultMessage": "Ошибка чтения файла .goosehints: {error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": "Не удалось получить доступ к файлу .CoWorkhints"
+    "defaultMessage": "Не удалось получить доступ к файлу .goosehints"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": "Не удалось сохранить файл .CoWorkhints"
+    "defaultMessage": "Не удалось сохранить файл .goosehints"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "Создание нового файла .CoWorkhints по пути: {filePath}"
+    "defaultMessage": "Создание нового файла .goosehints по пути: {filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": "Файл .CoWorkhints найден по пути: {filePath}"
+    "defaultMessage": "Файл .goosehints найден по пути: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints — это текстовый файл для дополнительного контекста о проекте и улучшения взаимодействия с CoWork."
+    "defaultMessage": ".goosehints — это текстовый файл для дополнительного контекста о проекте и улучшения взаимодействия с CoWork."
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "Убедитесь, что расширение {bold} включено на странице расширений. Оно необходимо для использования .CoWorkhints. Чтобы обновления .CoWorkhints вступили в силу, перезапустите сеанс."
+    "defaultMessage": "Убедитесь, что расширение {bold} включено на странице расширений. Оно необходимо для использования .goosehints. Чтобы обновления .goosehints вступили в силу, перезапустите сеанс."
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "Подробнее см. {link}."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "использование .CoWorkhints"
+    "defaultMessage": "использование .goosehints"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Введите подсказки проекта здесь..."
@@ -1314,10 +1311,10 @@
     "defaultMessage": "Настроить"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Настройте файл .CoWorkhints вашего проекта, чтобы предоставить CoWork дополнительный контекст"
+    "defaultMessage": "Настройте файл .goosehints вашего проекта, чтобы предоставить CoWork дополнительный контекст"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "Подсказки проекта (.CoWorkhints)"
+    "defaultMessage": "Подсказки проекта (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "Спросить CoWork"

@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "Menjana deeplink..."
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "Ketahui lebih lanjut"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Resipi berjaya disimpan dan dilancarkan"
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "Berikan konteks tambahan tentang projek anda untuk meningkatkan komunikasi dengan CoWork"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "Konfigurasikan Petunjuk Projek (.CoWorkhints)"
+    "defaultMessage": "Konfigurasikan Petunjuk Projek (.goosehints)"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": "Ralat membaca fail .CoWorkhints: {error}"
+    "defaultMessage": "Ralat membaca fail .goosehints: {error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": "Gagal mengakses fail .CoWorkhints"
+    "defaultMessage": "Gagal mengakses fail .goosehints"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": "Gagal menyimpan fail .CoWorkhints"
+    "defaultMessage": "Gagal menyimpan fail .goosehints"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "Mencipta fail .CoWorkhints baharu di: {filePath}"
+    "defaultMessage": "Mencipta fail .goosehints baharu di: {filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": "Fail .CoWorkhints dijumpai di: {filePath}"
+    "defaultMessage": "Fail .goosehints dijumpai di: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints ialah fail teks yang digunakan untuk memberikan konteks tambahan tentang projek anda dan meningkatkan komunikasi dengan CoWork."
+    "defaultMessage": ".goosehints ialah fail teks yang digunakan untuk memberikan konteks tambahan tentang projek anda dan meningkatkan komunikasi dengan CoWork."
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "Sila pastikan sambungan {bold} didayakan dalam halaman sambungan. Sambungan ini diperlukan untuk menggunakan .CoWorkhints. Anda perlu memulakan semula sesi anda untuk kemas kini .CoWorkhints berkuat kuasa."
+    "defaultMessage": "Sila pastikan sambungan {bold} didayakan dalam halaman sambungan. Sambungan ini diperlukan untuk menggunakan .goosehints. Anda perlu memulakan semula sesi anda untuk kemas kini .goosehints berkuat kuasa."
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "Lihat {link} untuk maklumat lanjut."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "menggunakan .CoWorkhints"
+    "defaultMessage": "menggunakan .goosehints"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Masukkan petunjuk projek di sini..."
@@ -1314,10 +1311,10 @@
     "defaultMessage": "Konfigurasikan"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Konfigurasikan fail .CoWorkhints projek anda untuk memberikan konteks tambahan kepada CoWork"
+    "defaultMessage": "Konfigurasikan fail .goosehints projek anda untuk memberikan konteks tambahan kepada CoWork"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "Petunjuk Projek (.CoWorkhints)"
+    "defaultMessage": "Petunjuk Projek (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "Tanya CoWork"

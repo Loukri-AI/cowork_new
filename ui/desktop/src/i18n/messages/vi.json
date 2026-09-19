@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "Đang tạo deeplink..."
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "Tìm hiểu thêm"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Đã lưu và khởi chạy công thức thành công"
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "Cung cấp thêm ngữ cảnh về dự án của bạn để cải thiện giao tiếp với CoWork"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "Cấu hình gợi ý dự án (.CoWorkhints)"
+    "defaultMessage": "Cấu hình gợi ý dự án (.goosehints)"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": "Lỗi khi đọc tệp .CoWorkhints: {error}"
+    "defaultMessage": "Lỗi khi đọc tệp .goosehints: {error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": "Không thể truy cập tệp .CoWorkhints"
+    "defaultMessage": "Không thể truy cập tệp .goosehints"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": "Không thể lưu tệp .CoWorkhints"
+    "defaultMessage": "Không thể lưu tệp .goosehints"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "Đang tạo tệp .CoWorkhints mới tại: {filePath}"
+    "defaultMessage": "Đang tạo tệp .goosehints mới tại: {filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": "Đã tìm thấy tệp .CoWorkhints tại: {filePath}"
+    "defaultMessage": "Đã tìm thấy tệp .goosehints tại: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints là một tệp văn bản dùng để cung cấp thêm ngữ cảnh về dự án của bạn và cải thiện giao tiếp với CoWork."
+    "defaultMessage": ".goosehints là một tệp văn bản dùng để cung cấp thêm ngữ cảnh về dự án của bạn và cải thiện giao tiếp với CoWork."
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "Hãy đảm bảo tiện ích mở rộng {bold} được bật trong trang tiện ích mở rộng. Tiện ích mở rộng này là bắt buộc để sử dụng .CoWorkhints. Bạn cần khởi động lại phiên để các cập nhật .CoWorkhints có hiệu lực."
+    "defaultMessage": "Hãy đảm bảo tiện ích mở rộng {bold} được bật trong trang tiện ích mở rộng. Tiện ích mở rộng này là bắt buộc để sử dụng .goosehints. Bạn cần khởi động lại phiên để các cập nhật .goosehints có hiệu lực."
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "Xem {link} để biết thêm thông tin."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "cách sử dụng .CoWorkhints"
+    "defaultMessage": "cách sử dụng .goosehints"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Nhập gợi ý dự án ở đây..."
@@ -1314,10 +1311,10 @@
     "defaultMessage": "Cấu hình"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Cấu hình tệp .CoWorkhints của dự án để cung cấp thêm ngữ cảnh cho CoWork"
+    "defaultMessage": "Cấu hình tệp .goosehints của dự án để cung cấp thêm ngữ cảnh cho CoWork"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "Gợi ý dự án (.CoWorkhints)"
+    "defaultMessage": "Gợi ý dự án (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "Hỏi CoWork"

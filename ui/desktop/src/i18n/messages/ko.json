@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "딥링크 생성 중..."
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "자세히 알아보기"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "레시피가 저장되고 성공적으로 실행되었습니다."
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "CoWork와의 커뮤니케이션을 개선할 수 있도록 프로젝트에 대한 추가 컨텍스트를 제공하세요."
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "프로젝트 힌트 구성(.CoWorkhints)"
+    "defaultMessage": "프로젝트 힌트 구성(.goosehints)"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": ".CoWorkhints 파일 읽기 오류: {error}"
+    "defaultMessage": ".goosehints 파일 읽기 오류: {error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": ".CoWorkhints 파일에 액세스하지 못했습니다."
+    "defaultMessage": ".goosehints 파일에 액세스하지 못했습니다."
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": ".CoWorkhints 파일을 저장하지 못했습니다."
+    "defaultMessage": ".goosehints 파일을 저장하지 못했습니다."
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "새 .CoWorkhints 파일 생성: {filePath}"
+    "defaultMessage": "새 .goosehints 파일 생성: {filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": ".CoWorkhints 파일 위치: {filePath}"
+    "defaultMessage": ".goosehints 파일 위치: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints는 프로젝트에 대한 추가 컨텍스트를 제공하고 CoWork와의 커뮤니케이션을 개선하는 데 사용되는 텍스트 파일입니다."
+    "defaultMessage": ".goosehints는 프로젝트에 대한 추가 컨텍스트를 제공하고 CoWork와의 커뮤니케이션을 개선하는 데 사용되는 텍스트 파일입니다."
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "익스텐션 페이지에서 {bold} 익스텐션이 활성화되어 있는지 확인하세요. .CoWorkhints를 사용하려면 이 익스텐션이 필요합니다. .CoWorkhints 업데이트를 적용하려면 세션을 다시 시작해야 합니다."
+    "defaultMessage": "익스텐션 페이지에서 {bold} 익스텐션이 활성화되어 있는지 확인하세요. .goosehints를 사용하려면 이 익스텐션이 필요합니다. .goosehints 업데이트를 적용하려면 세션을 다시 시작해야 합니다."
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "자세한 내용은 {link}를 참조하세요."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": ".CoWorkhints 사용"
+    "defaultMessage": ".goosehints 사용"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "여기에 프로젝트 힌트를 입력하세요..."
@@ -1314,10 +1311,10 @@
     "defaultMessage": "설정"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "프로젝트의 .CoWorkhints 파일을 설정하여 CoWork에 추가 컨텍스트를 제공합니다."
+    "defaultMessage": "프로젝트의 .goosehints 파일을 설정하여 CoWork에 추가 컨텍스트를 제공합니다."
   },
   "goosehintsSection.title": {
-    "defaultMessage": "프로젝트 힌트(.CoWorkhints)"
+    "defaultMessage": "프로젝트 힌트(.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "CoWork에게 묻기"

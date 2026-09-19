@@ -368,9 +368,6 @@
   "createEditRecipe.generatingDeeplink": {
     "defaultMessage": "Membuat deeplink..."
   },
-  "createEditRecipe.learnMore": {
-    "defaultMessage": "Pelajari selengkapnya"
-  },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Resep berhasil disimpan dan dijalankan"
   },
@@ -1269,34 +1266,34 @@
     "defaultMessage": "Berikan konteks tambahan tentang proyek Anda untuk meningkatkan komunikasi dengan CoWork"
   },
   "goosehintsModal.dialogTitle": {
-    "defaultMessage": "Konfigurasikan Petunjuk Proyek (.CoWorkhints)"
+    "defaultMessage": "Konfigurasikan Petunjuk Proyek (.goosehints)"
   },
   "goosehintsModal.errorReading": {
-    "defaultMessage": "Kesalahan membaca file .CoWorkhints: {error}"
+    "defaultMessage": "Kesalahan membaca file .goosehints: {error}"
   },
   "goosehintsModal.failedToAccess": {
-    "defaultMessage": "Gagal mengakses file .CoWorkhints"
+    "defaultMessage": "Gagal mengakses file .goosehints"
   },
   "goosehintsModal.failedToSave": {
-    "defaultMessage": "Gagal menyimpan file .CoWorkhints"
+    "defaultMessage": "Gagal menyimpan file .goosehints"
   },
   "goosehintsModal.fileCreating": {
-    "defaultMessage": "Membuat file .CoWorkhints baru di: {filePath}"
+    "defaultMessage": "Membuat file .goosehints baru di: {filePath}"
   },
   "goosehintsModal.fileFound": {
-    "defaultMessage": "File .CoWorkhints ditemukan di: {filePath}"
+    "defaultMessage": "File .goosehints ditemukan di: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".CoWorkhints adalah file teks yang digunakan untuk memberikan konteks tambahan tentang proyek Anda dan meningkatkan komunikasi dengan CoWork."
+    "defaultMessage": ".goosehints adalah file teks yang digunakan untuk memberikan konteks tambahan tentang proyek Anda dan meningkatkan komunikasi dengan CoWork."
   },
   "goosehintsModal.helpText2": {
-    "defaultMessage": "Pastikan ekstensi {bold} diaktifkan di halaman ekstensi. Ekstensi ini diperlukan untuk menggunakan .CoWorkhints. Anda perlu memulai ulang sesi agar pembaruan .CoWorkhints berlaku."
+    "defaultMessage": "Pastikan ekstensi {bold} diaktifkan di halaman ekstensi. Ekstensi ini diperlukan untuk menggunakan .goosehints. Anda perlu memulai ulang sesi agar pembaruan .goosehints berlaku."
   },
   "goosehintsModal.helpText3": {
     "defaultMessage": "Lihat {link} untuk informasi lebih lanjut."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "menggunakan .CoWorkhints"
+    "defaultMessage": "menggunakan .goosehints"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Masukkan petunjuk proyek di sini..."
@@ -1314,10 +1311,10 @@
     "defaultMessage": "Konfigurasikan"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Konfigurasikan file .CoWorkhints proyek Anda untuk memberikan konteks tambahan ke CoWork"
+    "defaultMessage": "Konfigurasikan file .goosehints proyek Anda untuk memberikan konteks tambahan ke CoWork"
   },
   "goosehintsSection.title": {
-    "defaultMessage": "Petunjuk Proyek (.CoWorkhints)"
+    "defaultMessage": "Petunjuk Proyek (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
     "defaultMessage": "Tanya CoWork"

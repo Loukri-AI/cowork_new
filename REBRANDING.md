@@ -20,6 +20,8 @@ Apache-2.0), productized as **Loukri AI CoWork** for VVIT, with **TokenKey
 | Desktop onboarding renders the TokenKey key form directly (no provider picker, no local-model card, no custom-provider modal) | `ui/desktop/src/components/onboarding/ProviderSelector.tsx` |
 | Settings: "Add Provider" card removed; local-inference section force-disabled | `ui/desktop/src/components/settings/providers/ProviderGrid.tsx`, `ui/desktop/src/acp/capabilities.ts` |
 | Default provider/model fallbacks: `tokenkey` / `tk-auto` | `ui/desktop/src/main.ts` (`getBundledConfig`) |
+| Skills platform extension disabled by default (the global skills index added ~8k tokens to every request) | `crates/goose/src/agents/platform_extensions/mod.rs` |
+| No goose-docs.ai / aaif-goose links remain in the UI: quickstart link → tokenkey.in/docs, issue links → Loukri-AI/cowork_new, docs buttons removed | `ui/desktop/src/components/**` |
 | Telemetry disabled by default (`GOOSE_DISABLE_TELEMETRY=1` on the backend process) | `ui/desktop/src/gooseServe.ts` |
 | Agent identity in system prompt | `crates/goose/src/prompts/system.md` |
 

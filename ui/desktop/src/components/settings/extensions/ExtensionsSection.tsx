@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Button } from '../../ui/button';
 import { Plus } from 'lucide-react';
-import { GPSIcon } from '../../ui/icons';
 import { useConfig, FixedExtensionEntry } from '../../ConfigContext';
 import { defineMessages, useIntl } from '../../../i18n';
 import ExtensionList from './subcomponents/ExtensionList';
@@ -227,14 +226,6 @@ export default function ExtensionsSection({
             >
               <Plus className="h-4 w-4" />
               {intl.formatMessage(i18n.addCustomExtension)}
-            </Button>
-            <Button
-              className="flex items-center gap-2 justify-center"
-              variant="secondary"
-              onClick={() => window.open('https://goose-docs.ai/v1/extensions/', '_blank')}
-            >
-              <GPSIcon size={12} />
-              {intl.formatMessage(i18n.browseExtensions)}
             </Button>
           </div>
         )}

@@ -213,7 +213,10 @@ pub static PLATFORM_EXTENSIONS: Lazy<HashMap<&'static str, PlatformExtensionDef>
                 name: crate::skills::EXTENSION_NAME,
                 display_name: "Skills",
                 description: "Discover and provide skill instructions from filesystem and builtins",
-                default_enabled: true,
+                // Loukri AI CoWork: disabled by default — the global skills
+                // index adds thousands of tokens to every request's system
+                // prompt, which dominates time-to-first-token.
+                default_enabled: false,
                 unprefixed_tools: true,
                 hidden: false,
                 client_factory: |ctx| {
