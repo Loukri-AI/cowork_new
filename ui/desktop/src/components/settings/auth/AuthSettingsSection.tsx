@@ -136,7 +136,13 @@ export default function AuthSettingsSection() {
     setLoading(true);
     try {
       const secrets = await acpListProviderSecrets();
-      setSecrets(secrets);
+      // Loukri AI CoWork: only credentials for bundled providers are shown —
+      // TokenKey is the only AI provider, so entries like Hugging Face are hidden.
+      setSecrets(
+        secrets.filter(
+          (s) => s.provider === 'tokenkey' || s.provider.startsWith('custom_')
+        )
+      );
     } catch {
       toast.error(intl.formatMessage(i18n.failedToLoad));
       setSecrets([]);

@@ -94,7 +94,9 @@ export const defaultSettings: Settings = {
   useSystemTheme: true,
   language: 'system',
   responseStyle: 'concise',
-  showPricing: true,
+  // Loukri AI CoWork: cost tracking is off by default (tokenkey.in pricing
+  // isn't public); users can re-enable it in Settings → App.
+  showPricing: false,
   seenAnnouncementIds: [],
   recentModels: [],
   useLegacyAgentLoop: false,
