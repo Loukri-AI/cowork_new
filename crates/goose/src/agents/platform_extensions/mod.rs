@@ -37,7 +37,7 @@ pub static PLATFORM_EXTENSIONS: Lazy<HashMap<&'static str, PlatformExtensionDef>
                 display_name: "Analyze",
                 description:
                     "Analyze code structure with tree-sitter: directory overviews, file details, symbol call graphs",
-                default_enabled: true,
+                default_enabled: false,
                 unprefixed_tools: true,
                 hidden: false,
                 client_factory: |ctx| Some(Box::new(analyze::AnalyzeClient::new(ctx).unwrap())),
@@ -65,7 +65,7 @@ pub static PLATFORM_EXTENSIONS: Lazy<HashMap<&'static str, PlatformExtensionDef>
                 display_name: "Apps",
                 description:
                     "Create and manage custom Goose apps through chat. Apps are HTML/CSS/JavaScript and run in sandboxed windows.",
-                default_enabled: true,
+                default_enabled: false,
                 unprefixed_tools: false,
                 hidden: false,
                 client_factory: |ctx| Some(Box::new(apps::AppsManagerClient::new(ctx).unwrap())),
@@ -95,7 +95,7 @@ pub static PLATFORM_EXTENSIONS: Lazy<HashMap<&'static str, PlatformExtensionDef>
                 display_name: "Extension Manager",
                 description:
                     "Enable extension management tools for discovering, enabling, and disabling extensions",
-                default_enabled: true,
+                default_enabled: false,
                 unprefixed_tools: false,
                 hidden: false,
                 client_factory: |ctx| Some(Box::new(ext_manager::ExtensionManagerClient::new(ctx).unwrap())),
@@ -108,7 +108,7 @@ pub static PLATFORM_EXTENSIONS: Lazy<HashMap<&'static str, PlatformExtensionDef>
                 name: scheduler::EXTENSION_NAME,
                 display_name: "Scheduler",
                 description: "Create and manage scheduled recipe execution",
-                default_enabled: true,
+                default_enabled: false,
                 unprefixed_tools: false,
                 hidden: true,
                 client_factory: |ctx| {
@@ -123,7 +123,7 @@ pub static PLATFORM_EXTENSIONS: Lazy<HashMap<&'static str, PlatformExtensionDef>
                 name: summon::EXTENSION_NAME,
                 display_name: "Summon",
                 description: "Load knowledge and delegate tasks to subagents",
-                default_enabled: true,
+                default_enabled: false,
                 unprefixed_tools: true,
                 hidden: false,
                 client_factory: |ctx| Some(Box::new(summon::SummonClient::new(ctx).unwrap())),
