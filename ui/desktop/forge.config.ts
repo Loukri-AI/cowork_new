@@ -52,11 +52,16 @@ if (process.env.APPLE_TEAM_ID) {
     entitlements: 'entitlements.plist',
     'entitlements-inherit': 'entitlements.plist',
   };
-  cfg.osxNotarize = {
-    appleId: process.env.APPLE_ID,
-    appleIdPassword: process.env.APPLE_ID_PASSWORD,
-    teamId: process.env.APPLE_TEAM_ID,
-  };
+  // SKIP_NOTARIZE=1 signs but does not wait on Apple: submit the zip with
+  // `notarytool submit --no-wait` afterwards and staple when it is accepted.
+  // Apple's queue can take hours for a new team, longer than a build should.
+  if (!process.env.SKIP_NOTARIZE) {
+    cfg.osxNotarize = {
+      appleId: process.env.APPLE_ID,
+      appleIdPassword: process.env.APPLE_ID_PASSWORD,
+      teamId: process.env.APPLE_TEAM_ID,
+    };
+  }
 }
 
 module.exports = {
