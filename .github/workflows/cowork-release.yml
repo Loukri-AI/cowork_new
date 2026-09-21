@@ -77,6 +77,10 @@ jobs:
     uses: ./.github/workflows/bundle-windows.yml
     permissions:
       contents: read
+      # The Windows signing job authenticates to Azure Trusted Signing with an
+      # OIDC token; a caller that does not grant it cannot call the workflow
+      # at all, even when signing is off.
+      id-token: write
     with:
       version: ${{ needs.version.outputs.version }}
       package_desktop: true
