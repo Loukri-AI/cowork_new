@@ -1,8 +1,8 @@
 {
   "name": "loukri-cowork",
   "productName": "Loukri AI CoWork",
-  "version": "1.51.0",
-  "description": "Loukri AI CoWork \u2014 AI workspace powered by TokenKey",
+  "version": "1.51.1",
+  "description": "Loukri AI CoWork — AI workspace powered by TokenKey",
   "engines": {
     "node": "^24.10.0",
     "pnpm": ">=10.30.0"
