@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { acpListSetupProviderDetails } from '../../acp/providers';
 import type { ProviderDetails } from '../../types/providers';
 import ProviderConfigForm from './ProviderConfigForm';
+import TokenKeySignIn from './TokenKeySignIn';
 
 interface ProviderSelectorProps {
   onConfigured: (providerName: string, modelId?: string) => void | Promise<void>;
@@ -38,6 +39,7 @@ export default function ProviderSelector({
 
   return (
     <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+      <TokenKeySignIn onConfigured={onConfigured} />
       <ProviderConfigForm key={provider.name} provider={provider} onConfigured={onConfigured} />
     </div>
   );

@@ -5,6 +5,7 @@ import ModelsSection from './models/ModelsSection';
 import ExternalBackendSection from './app/ExternalBackendSection';
 import AgentLoopSettings from './AgentLoopSettings';
 import AppSettingsSection from './app/AppSettingsSection';
+import TokenKeyAccountSection from './app/TokenKeyAccountSection';
 import ConfigSettings from './config/ConfigSettings';
 import PromptsSettingsSection from './PromptsSettingsSection';
 import type { ExtensionConfig } from '../../types/extensions';
@@ -316,6 +317,7 @@ export default function SettingsView({
                 value="auth"
                 className="mt-0 focus-visible:outline-none focus-visible:ring-0"
               >
+                <TokenKeyAccountSection />
                 <AuthSettingsSection />
               </TabsContent>
 

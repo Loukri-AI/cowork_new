@@ -26,10 +26,19 @@ Apache-2.0), productized as **Loukri AI CoWork** for VVIT, with **TokenKey
 | Extensions on by default: **Developer** and **Top of Mind** only. Analyze, Apps, Extension Manager, Scheduler and Summon ship disabled (each adds tool schemas and instructions to every request; with all seven on, a one-word first message cost ~11.5k input tokens on `tk-base`, with two it costs ~1.6k). Users can switch them on in Settings → Extensions. | `crates/goose/src/agents/platform_extensions/mod.rs` (`default_enabled`) |
 | Agent identity in system prompt | `crates/goose/src/prompts/system.md` |
 
-Users authenticate with **their own** `tk_live_...` key from the TokenKey console,
-entered on first run (stored in goose's secret store: Windows keyring or
-`%APPDATA%\Block\goose\secrets.yaml`). The base URL is compiled into the provider
-definition and cannot be changed from the UI.
+Users sign in one of two ways, both ending with a `tk_live_...` key in goose's
+secret store (macOS keychain, Windows keyring, or `secrets.yaml`). The base URL is
+compiled into the provider definition and cannot be changed from the UI.
+
+- **Sign in with TokenKey** (default, `ui/desktop/src/components/onboarding/TokenKeySignIn.tsx`,
+  main-process side in `ui/desktop/src/main.ts` under "Sign in with TokenKey"). The app
+  generates a PKCE verifier, opens `https://tokenkey.in/cowork/open?client=desktop&challenge=…`
+  in the browser, and the console comes back through `goose://auth?code=…`. The app
+  redeems `{code, verifier}` at `POST /api/cowork/redeem-public`, saves the minted
+  "CoWork Desktop" key via `providersConfigSave_unstable`, and stores who signed in
+  under the config key `TOKENKEY_IDENTITY` (shown in Settings → Auth as "TokenKey
+  account", with Sign out). `TOKENKEY_SITE` env overrides the host for a dev console.
+- **Paste a key** from the console, as before.
 
 ### Adding tk-32b / tk-coder when they go live
 
@@ -62,9 +71,13 @@ curated; flip it to `true` to fetch `GET /v1/models` live instead.)
   binary name, config directory (`%APPDATA%\Block\goose`), session partition
   `persist:goose`, and the `.goosehints` convention — renaming these would break
   backend compatibility and shared links for no visible benefit.
-- The update feed points at `Loukri-AI/cowork_new` (this repository). Until it
-  publishes releases with `latest.yml`, update checks simply find nothing — they
-  can never pull an upstream goose build over this distribution.
+- The update feed points at `Loukri-AI/cowork_new` (this repository) in **three**
+  places that must agree: `ui/desktop/src/app-update.yml`, the source defaults in
+  `src/utils/autoUpdater.ts` / `src/utils/githubUpdater.ts`, and the build-time
+  `define` in `ui/desktop/vite.main.config.mts` (which overrides the source
+  defaults; until 20 Sep it still said `aaif-goose/goose`, so packaged builds were
+  checking upstream for updates). Until this repository publishes `latest-mac.yml`,
+  electron-updater finds nothing and the GitHub-API fallback takes over.
 
 ## Releasing (CI) — macOS + Windows installers on GitHub Releases
 

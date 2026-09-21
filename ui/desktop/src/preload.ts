@@ -160,6 +160,8 @@ type ElectronAPI = {
     tokensUpdated?: boolean;
   }) => void;
   openExternal: (url: string) => Promise<OpenExternalUrlResult>;
+  startTokenKeyLogin: () => Promise<boolean>;
+  cancelTokenKeyLogin: () => Promise<boolean>;
   // Update-related functions
   getVersion: () => string;
   checkForUpdates: () => Promise<{ updateInfo: unknown; error: string | null }>;
@@ -261,6 +263,8 @@ const electronAPI: ElectronAPI = {
     return ipcRenderer.invoke('set-setting', key, value);
   },
   getSecretKey: () => ipcRenderer.invoke('get-secret-key'),
+  startTokenKeyLogin: () => ipcRenderer.invoke('tokenkey-login-start'),
+  cancelTokenKeyLogin: () => ipcRenderer.invoke('tokenkey-login-cancel'),
   getAcpUrl: () => ipcRenderer.invoke('get-acp-url'),
   setWakelock: (enable: boolean) => ipcRenderer.invoke('set-wakelock', enable),
   getWakelockState: () => ipcRenderer.invoke('get-wakelock-state'),

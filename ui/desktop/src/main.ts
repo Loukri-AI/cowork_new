@@ -616,6 +616,82 @@ async function createResumeChatWindow(parsedUrl: URL, dir?: string): Promise<boo
   return true;
 }
 
+// ---------------------------------------------------------------------------
+// Sign in with TokenKey (tokenkey.in).
+//
+// The app never sees a password and the person never sees a key. The app
+// makes a random verifier, keeps it here, and opens the browser at the
+// console with the verifier's SHA-256. The console signs the person in,
+// asks the gateway for a one-time code bound to that hash, and opens
+// goose://auth?code=… . The app then trades code + verifier for the person's
+// identity and a key minted for this machine, which goes into the secret
+// store like a pasted key would. Only the app that started the sign-in can
+// finish it, so the code needs no shared secret on the laptop.
+// ---------------------------------------------------------------------------
+const TOKENKEY_SITE = process.env.TOKENKEY_SITE || 'https://tokenkey.in';
+const TOKENKEY_LOGIN_TTL_MS = 10 * 60 * 1000;
+let pendingTokenKeyLogin: { verifier: string; startedAt: number } | null = null;
+
+function base64url(bytes: Buffer): string {
+  return bytes.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function startTokenKeyLogin(): string {
+  const verifier = base64url(crypto.randomBytes(48));
+  const challenge = base64url(crypto.createHash('sha256').update(verifier).digest());
+  pendingTokenKeyLogin = { verifier, startedAt: Date.now() };
+  return `${TOKENKEY_SITE}/cowork/open?client=desktop&challenge=${challenge}`;
+}
+
+async function completeTokenKeyLogin(parsedUrl: URL, window: BrowserWindow) {
+  const code = parsedUrl.searchParams.get('code');
+  const pending = pendingTokenKeyLogin;
+  pendingTokenKeyLogin = null;
+  const fail = (message: string) => {
+    log.warn(`[Main] TokenKey sign-in failed: ${message}`);
+    window.webContents.send('tokenkey-sign-in-failed', { message });
+  };
+  if (!code) return fail('The sign-in link carried no code.');
+  if (!pending || Date.now() - pending.startedAt > TOKENKEY_LOGIN_TTL_MS) {
+    return fail('This sign-in was not started from this app, or took too long. Try again.');
+  }
+  try {
+    const response = await fetch(`${TOKENKEY_SITE}/api/cowork/redeem-public`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ code, verifier: pending.verifier }),
+      signal: AbortSignal.timeout(15_000),
+    });
+    const body = (await response.json().catch(() => ({}))) as {
+      api_key?: string | null;
+      user?: { id: string; email: string; name: string; role: string };
+      tenant?: { slug: string; name: string; kind: string };
+      key?: { id: string; name: string; display: string; purpose: string } | null;
+      error?: { message?: string };
+    };
+    if (!response.ok) {
+      return fail(body.error?.message || `TokenKey answered ${response.status}.`);
+    }
+    if (!body.api_key || !body.user || !body.tenant) {
+      return fail('TokenKey signed you in but sent no key for this machine. Try again.');
+    }
+    log.info(`[Main] TokenKey sign-in complete for ${body.tenant.slug}`);
+    window.webContents.send('tokenkey-signed-in', {
+      apiKey: body.api_key,
+      user: { id: body.user.id, email: body.user.email, name: body.user.name, role: body.user.role },
+      tenant: { slug: body.tenant.slug, name: body.tenant.name, kind: body.tenant.kind },
+      key: body.key ? { display: body.key.display, name: body.key.name } : null,
+      signedInAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    fail(error instanceof Error ? error.message : String(error));
+  }
+}
+
+function redactDeepLink(url: string): string {
+  return url.replace(/(key|code)=[^&]+/g, '$1=REDACTED');
+}
+
 async function handleProtocolUrl(url: string, parsedUrl: URL) {
   if (!url) return;
 
@@ -668,7 +744,9 @@ async function processProtocolUrl(url: string, parsedUrl: URL, window: BrowserWi
   const recentDirs = loadRecentDirs();
   const openDir = recentDirs.length > 0 ? recentDirs[0] : null;
 
-  if (parsedUrl.hostname === 'extension') {
+  if (parsedUrl.hostname === 'auth') {
+    await completeTokenKeyLogin(parsedUrl, window);
+  } else if (parsedUrl.hostname === 'extension') {
     window.webContents.send('add-extension', url);
   } else if (parsedUrl.hostname === 'sessions') {
     sendOpenSharedSession(window, url);
@@ -693,7 +771,7 @@ app.on('open-url', async (_event, url) => {
 
     log.info(
       '[Main] Received open-url event:',
-      url.includes('key=') ? url.replace(/key=[^&]+/, 'key=REDACTED') : url
+      redactDeepLink(url)
     );
 
     await app.whenReady();
@@ -748,6 +826,8 @@ app.on('open-url', async (_event, url) => {
       targetWindow.focus();
       if (parsedUrl.hostname === 'extension' || parsedUrl.hostname === 'sessions') {
         deliverExtensionOrSessionDeepLink(url, parsedUrl, targetWindow);
+      } else if (parsedUrl.hostname === 'auth') {
+        await completeTokenKeyLogin(parsedUrl, targetWindow);
       }
     } else {
       openUrlHandledLaunch = true;
@@ -1931,6 +2011,17 @@ ipcMain.on('react-ready', (event) => {
 ipcMain.handle('open-external', async (event, url: string) => {
   const senderWindow = BrowserWindow.fromWebContents(event.sender) ?? undefined;
   return openExternalUrl(url, senderWindow, getConfiguredGooseLocale());
+});
+
+ipcMain.handle('tokenkey-login-start', async () => {
+  const url = startTokenKeyLogin();
+  await shell.openExternal(url);
+  return true;
+});
+
+ipcMain.handle('tokenkey-login-cancel', () => {
+  pendingTokenKeyLogin = null;
+  return true;
 });
 
 ipcMain.handle('directory-chooser', async () => {

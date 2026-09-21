@@ -4577,6 +4577,57 @@
   "themeSelector.theme": {
     "defaultMessage": "Theme"
   },
+  "tokenKeyAccount.description": {
+    "defaultMessage": "Who this copy of CoWork is signed in as, and the key it uses."
+  },
+  "tokenKeyAccount.key": {
+    "defaultMessage": "Key for this computer"
+  },
+  "tokenKeyAccount.manage": {
+    "defaultMessage": "Open the TokenKey console"
+  },
+  "tokenKeyAccount.organisation": {
+    "defaultMessage": "Organisation"
+  },
+  "tokenKeyAccount.pasted": {
+    "defaultMessage": "Connected with a pasted key. Sign out to switch to signing in through tokenkey.in."
+  },
+  "tokenKeyAccount.signOut": {
+    "defaultMessage": "Sign out"
+  },
+  "tokenKeyAccount.signOutHint": {
+    "defaultMessage": "Removes the key from this computer and returns to the sign-in screen. Conversations stay on this computer. To stop the key itself, revoke it in the TokenKey console."
+  },
+  "tokenKeyAccount.signedInAs": {
+    "defaultMessage": "Signed in as"
+  },
+  "tokenKeyAccount.since": {
+    "defaultMessage": "Since"
+  },
+  "tokenKeyAccount.title": {
+    "defaultMessage": "TokenKey account"
+  },
+  "tokenKeySignIn.cancel": {
+    "defaultMessage": "Cancel"
+  },
+  "tokenKeySignIn.explain": {
+    "defaultMessage": "Your browser opens tokenkey.in. Sign in, or register through your organisation, and CoWork receives a key made for this computer. You never have to copy one."
+  },
+  "tokenKeySignIn.failed": {
+    "defaultMessage": "Sign-in did not complete: {message}"
+  },
+  "tokenKeySignIn.or": {
+    "defaultMessage": "or paste a key you already have"
+  },
+  "tokenKeySignIn.saving": {
+    "defaultMessage": "Signed in. Setting up…"
+  },
+  "tokenKeySignIn.signIn": {
+    "defaultMessage": "Sign in with TokenKey"
+  },
+  "tokenKeySignIn.waiting": {
+    "defaultMessage": "Finish signing in in your browser. This window will update on its own."
+  },
   "toolApprovalButtons.allowOnce": {
     "defaultMessage": "Allow Once"
   },
