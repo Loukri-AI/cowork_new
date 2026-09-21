@@ -121,6 +121,31 @@ gh workflow run cowork-release.yml -f version=1.51.1   # artifacts only, no rele
 - The upstream `release.yml` (Linux/Docker/npm) is `workflow_dispatch`-only here
   so a `v*` tag does not run two pipelines.
 
+## Notarised macOS builds (how 1.51.1 was shipped)
+
+The Developer ID certificate ("Developer ID Application: Lourki AI Inc
+(X7HA29BX56)") lives in the login keychain of Lakshman's MacBook; its p12,
+password and the notary app-specific password are in `~/.loukri-signing/`.
+Until those are also in the repo's `signing` environment, CI produces ad-hoc
+signed macOS zips and the notarised ones are built locally and swapped in:
+
+```bash
+export APPLE_ID=laxmanj743@gmail.com APPLE_TEAM_ID=X7HA29BX56 \
+       APPLE_ID_PASSWORD="$(cat ~/.loukri-signing/notary.password)" SKIP_NOTARIZE=1
+cd ui/desktop && pnpm run bundle:default            # signs with the Developer ID
+xcrun notarytool submit "out/Loukri AI CoWork-darwin-arm64/LoukriCoWork.zip" \
+  --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_ID_PASSWORD" --no-wait
+# … when `notarytool info <id>` says Accepted (took ~1 h for the first ones):
+cd "out/Loukri AI CoWork-darwin-arm64" && xcrun stapler staple "Loukri AI CoWork.app" \
+  && ditto -c -k --sequesterRsrc --keepParent "Loukri AI CoWork.app" LoukriCoWork.zip \
+  && gh release upload vX.Y.Z LoukriCoWork.zip --clobber
+```
+
+Same for Intel with `bundle:intel` (after copying the x86_64 `goose` into
+`src/bin`) and `LoukriCoWork_intel_mac.zip`. `SKIP_NOTARIZE` exists because
+forge's built-in notarize step waits on Apple inside the build. Verify a
+download with `spctl --assess --type execute -v` → `Notarized Developer ID`.
+
 ## Building for Windows (local)
 
 Requirements: Node ≥ 24.10, pnpm ≥ 10.30, Rust (pinned 1.96.1 via rust-toolchain.toml),
