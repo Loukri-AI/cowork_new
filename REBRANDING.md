@@ -100,7 +100,14 @@ git tag v1.51.1 && git push origin v1.51.1     # builds + publishes the release
 gh workflow run cowork-release.yml -f version=1.51.1   # artifacts only, no release
 ```
 
-- Builds are **unsigned** until the `signing` environment holds the upstream
+- Without an Apple identity the bundle scripts **ad-hoc sign** the app
+  (`codesign --sign -`) before zipping and verify the signature. An unsigned
+  or broken-signature app downloaded from the internet is refused by macOS as
+  "damaged"; an ad-hoc signed one is refused as "unidentified developer" and
+  can be allowed under System Settings → Privacy & Security → Open Anyway (or
+  `xattr -cr` on the app). Anything that touches the .app after signing
+  (repackaging, editing Info.plist) invalidates it: sign last, zip, upload.
+- Builds are **not notarised** until the `signing` environment holds the upstream
   secrets (`APPLE_CERTIFICATE_BASE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_ID`,
   `APPLE_ID_PASSWORD`, `APPLE_TEAM_ID`; `AZURE_*` for Windows) and the repo
   variables `COWORK_SIGN_MACOS` / `COWORK_SIGN_WINDOWS` are `true`. Unsigned
