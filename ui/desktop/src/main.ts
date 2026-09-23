@@ -636,11 +636,27 @@ function base64url(bytes: Buffer): string {
   return bytes.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
+// An opaque, stable id for this machine and user, so a second sign-in here
+// replaces this machine's key on the gateway instead of adding one. Derived,
+// never sent raw: the gateway only ever sees the hash.
+function deviceIdentity(): { id: string; name: string } {
+  const material = `${os.hostname()}|${os.userInfo().username}|${os.arch()}|${process.platform}`;
+  const id = crypto.createHash('sha256').update(material).digest('hex').slice(0, 32);
+  return { id, name: os.hostname().replace(/\.local$/, '').slice(0, 40) };
+}
+
 function startTokenKeyLogin(): string {
   const verifier = base64url(crypto.randomBytes(48));
   const challenge = base64url(crypto.createHash('sha256').update(verifier).digest());
   pendingTokenKeyLogin = { verifier, startedAt: Date.now() };
-  return `${TOKENKEY_SITE}/cowork/open?client=desktop&challenge=${challenge}`;
+  const device = deviceIdentity();
+  const query = new URLSearchParams({
+    client: 'desktop',
+    challenge,
+    device: device.id,
+    device_name: device.name,
+  });
+  return `${TOKENKEY_SITE}/cowork/open?${query.toString()}`;
 }
 
 async function completeTokenKeyLogin(parsedUrl: URL, window: BrowserWindow) {
