@@ -1275,6 +1275,15 @@ impl Message {
             ProviderError::ContextLengthExceeded(_) => {
                 format!("{err}\n\nThe conversation is too long for the model's context window.")
             }
+            // Loukri AI CoWork: TokenKey is the only provider, so a refused key
+            // means the key was revoked or the organisation switched CoWork off
+            // for this person. Say what to do about it.
+            ProviderError::Authentication(_) => {
+                "TokenKey did not accept this app's key. Your organisation may have switched \
+                 CoWork off for you, or the key was revoked or has expired.\n\n\
+                 Open Settings, then TokenKey account, and sign in again."
+                    .to_string()
+            }
             _ => format!(
                 "Ran into this error: {err}.\n\n\
                  Please retry if you think this is a transient or recoverable error."
