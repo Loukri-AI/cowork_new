@@ -520,6 +520,38 @@ export function setupAutoUpdater(tray?: Tray) {
       });
   }, 5000); // Wait 5 seconds after app starts
 
+  // And again every six hours, for as long as the app is open.
+  //
+  // The startup check alone only helps someone who quits and reopens. This is
+  // a desktop app people leave running for days, so a release could ship on
+  // Monday and a user still be on the old build on Friday, never having been
+  // told. Six hours is frequent enough that a release reaches everyone within
+  // a working day, and rare enough that it is four requests a day to the
+  // GitHub API rather than a poll.
+  //
+  // Silent when there is nothing new: the same 'update-available' event as the
+  // startup path drives the tray badge and the in-app notice, and a check that
+  // finds the current version emits nothing at all.
+  const recheck = setInterval(
+    () => {
+      if (getUpdateAvailable()) {
+        return; // already told them; nagging every six hours is not a feature
+      }
+      log.info('=== PERIODIC UPDATE CHECK ===');
+      const currentVersion = autoUpdater.currentVersion?.version || app.getVersion();
+      trackUpdateCheckStarted('periodic', currentVersion);
+      autoUpdater.checkForUpdates().catch((err) => {
+        // Never fatal. A laptop that is asleep, offline or behind a captive
+        // portal fails here routinely, and the next check in six hours is the
+        // retry.
+        log.info('Periodic update check failed, will retry later:', err?.message);
+      });
+    },
+    6 * 60 * 60 * 1000
+  );
+
+  app.on('before-quit', () => clearInterval(recheck));
+
   // Handle update events
   autoUpdater.on('checking-for-update', () => {
     log.info('Auto-updater: Checking for update...');

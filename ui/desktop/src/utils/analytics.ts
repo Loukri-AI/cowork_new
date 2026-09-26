@@ -149,7 +149,7 @@ export type AnalyticsEvent =
   // Auto-update tracking events
   | {
       name: 'update_check_started';
-      properties: { trigger: 'startup' | 'manual'; current_version: string };
+      properties: { trigger: 'startup' | 'manual' | 'periodic'; current_version: string };
     }
   | {
       name: 'update_check_completed';
@@ -557,7 +557,7 @@ let currentUpdateMethod: UpdateMethod | null = null;
 let reportedMilestones: Set<25 | 50 | 75 | 100> = new Set();
 
 export function trackUpdateCheckStarted(
-  trigger: 'startup' | 'manual',
+  trigger: 'startup' | 'manual' | 'periodic',
   currentVersion: string
 ): void {
   trackEvent({
