@@ -8,12 +8,17 @@
   "models": [
     {
       "name": "tk-auto",
-      "context_limit": 131072,
+      "context_limit": 32768,
       "max_tokens": 8192
     },
     {
       "name": "tk-base",
-      "context_limit": 131072,
+      "context_limit": 65536,
+      "max_tokens": 8192
+    },
+    {
+      "name": "tk-reason",
+      "context_limit": 65536,
       "max_tokens": 8192
     }
   ],
@@ -22,7 +27,7 @@
   "model_doc_link": "https://tokenkey.in/docs",
   "setup_steps": [
     "Sign in at tokenkey.in and create an API key in the console",
-    "Keys start with tk_live_ and are shown only once — store them safely",
+    "Keys start with tk_live_ and are shown only once \u2014 store them safely",
     "Paste the key below to connect"
   ],
   "setup": {
