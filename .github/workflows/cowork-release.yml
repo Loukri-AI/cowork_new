@@ -6,7 +6,8 @@
 #   LoukriCoWork.zip                 macOS, Apple silicon
 #   LoukriCoWork_intel_mac.zip       macOS, Intel
 #   LoukriAICoWorkSetup.exe          Windows installer (Squirrel)
-#   LoukriCoWork-win32-x64.zip       Windows, portable
+#   LoukriCoWork-win32-x64.zip       Windows 64-bit, portable
+#   LoukriCoWork-win32-ia32.zip      Windows 32-bit (x86), portable, no code execution
 #   latest-mac.yml + LoukriCoWork-darwin-*.zip   electron-updater feed (macOS)
 #
 # Push a tag `vX.Y.Z` to release. Run by hand to only build the artifacts.
@@ -84,6 +85,28 @@ jobs:
     with:
       version: ${{ needs.version.outputs.version }}
       package_desktop: true
+      arch: x64
+      signing: ${{ vars.COWORK_SIGN_WINDOWS == 'true' }}
+      environment: ${{ vars.COWORK_SIGN_WINDOWS == 'true' && 'signing' || '' }}
+    secrets: inherit
+
+  # 32-bit Windows, which is the same thing as x86. Built without code
+  # execution: V8 publishes no i686 binary, so the feature cannot be present
+  # on this architecture. Everything else is identical to the x64 build.
+  #
+  # Electron 43 is the last version that can build this at all; 44 removed it
+  # and 43 loses support in January 2027. Whoever does the next Electron
+  # upgrade has to remove this job.
+  windows-x86:
+    needs: version
+    uses: ./.github/workflows/bundle-windows.yml
+    permissions:
+      contents: read
+      id-token: write
+    with:
+      version: ${{ needs.version.outputs.version }}
+      package_desktop: true
+      arch: ia32
       signing: ${{ vars.COWORK_SIGN_WINDOWS == 'true' }}
       environment: ${{ vars.COWORK_SIGN_WINDOWS == 'true' && 'signing' || '' }}
     secrets: inherit
@@ -91,7 +114,7 @@ jobs:
   release:
     name: Publish GitHub Release
     if: startsWith(github.ref, 'refs/tags/')
-    needs: [version, macos-arm64, macos-intel, windows]
+    needs: [version, macos-arm64, macos-intel, windows, windows-x86]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -128,6 +151,7 @@ jobs:
             latest-mac.yml
             mac-update-requirements.json
             LoukriCoWork-win32-x64.zip
+            LoukriCoWork-win32-ia32.zip
             LoukriAICoWorkSetup.exe
             RELEASES
           )
