@@ -143,7 +143,11 @@ jobs:
           if ($isCuda) {
             cargo build --release --target ${{ inputs.arch == 'ia32' && 'i686' || 'x86_64' }}-pc-windows-msvc -p goose-cli --bin goose --features cuda
           } else {
-            cargo build --release --target ${{ inputs.arch == 'ia32' && 'i686' || 'x86_64' }}-pc-windows-msvc -p goose-cli --bin goose --no-default-features --features "code-mode,aws-providers,telemetry,nostr,otel,rustls-tls,live-voice,system-keyring,update"
+            # code-mode is dropped on 32-bit: it pulls in V8, which publishes no
+            # i686-pc-windows-msvc build, so its build script 404s on the
+            # download. Everything else is identical between the two
+            # architectures.
+            cargo build --release --target ${{ inputs.arch == 'ia32' && 'i686' || 'x86_64' }}-pc-windows-msvc -p goose-cli --bin goose --no-default-features --features "${{ inputs.arch == 'ia32' && '' || 'code-mode,' }}aws-providers,telemetry,nostr,otel,rustls-tls,live-voice,system-keyring,update"
           }
 
           $binaryPath = "./target/${{ inputs.arch == 'ia32' && 'i686' || 'x86_64' }}-pc-windows-msvc/release/goose.exe"
