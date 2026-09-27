@@ -60,6 +60,13 @@ fn asset_name() -> &'static str {
     {
         "goose-x86_64-pc-windows-msvc.zip"
     }
+    // 32-bit Windows. No CUDA arm: a machine running a 32-bit build is not one
+    // with a CUDA GPU, and code-mode is absent there anyway because V8 ships no
+    // i686 binary.
+    #[cfg(all(target_os = "windows", target_arch = "x86"))]
+    {
+        "goose-i686-pc-windows-msvc.zip"
+    }
 }
 
 /// Binary name for this platform.
