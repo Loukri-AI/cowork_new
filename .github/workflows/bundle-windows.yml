@@ -59,12 +59,12 @@ on:
         description: 'GitHub Environment containing signing secrets. Leave empty for unsigned builds.'
         required: false
         type: string
+        default: ''
       arch:
         description: 'Windows architecture: x64 or ia32 (32-bit)'
         required: false
         type: string
         default: 'x64'
-        default: ''
       ref:
         description: 'Git ref to checkout'
         required: false
