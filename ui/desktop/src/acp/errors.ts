@@ -7,6 +7,8 @@ export interface AcpCreditsExhaustedError {
 }
 
 const CREDITS_EXHAUSTED_REASON = 'credits_exhausted';
+// Kept in sync with CONTEXT_LENGTH_EXCEEDED_REASON in crates/goose/src/acp/mod.rs.
+const CONTEXT_LENGTH_EXCEEDED_REASON = 'context_length_exceeded';
 const AUTH_REQUIRED_CODE = -32000;
 
 // Kept in sync with RECIPE_PARAMS_CANCELLED_REASON in crates/goose/src/acp/server/recipe.rs.
@@ -55,6 +57,16 @@ export function parseAcpCreditsExhaustedError(error: unknown): AcpCreditsExhaust
     message: jsonRpcError.message,
     ...(url ? { url } : {}),
   };
+}
+
+/**
+ * Did this turn fail because the conversation outgrew the model's context?
+ *
+ * The desktop app needs to tell this apart from a generic failure so it can
+ * stop its progress indicator and say what actually happened.
+ */
+export function isAcpContextLengthExceeded(error: unknown): boolean {
+  return asAcpJsonRpcError(error)?.data?.reason === CONTEXT_LENGTH_EXCEEDED_REASON;
 }
 
 export function formatAcpError(error: unknown): string {

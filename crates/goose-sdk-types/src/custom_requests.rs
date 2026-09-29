@@ -47,6 +47,23 @@ pub struct RemoveSessionExtensionRequest {
     pub extension_key: String,
 }
 
+/// Erase every locally stored conversation.
+///
+/// Loukri AI CoWork calls this when someone signs out of a TokenKey account, so
+/// that the next person to sign in on the same computer cannot read the
+/// previous account's chats.
+#[derive(Debug, Default, Clone, Serialize, Deserialize, JsonSchema, JsonRpcRequest)]
+#[request(method = "_goose/unstable/sessions/purge", response = PurgeSessionsResponse)]
+#[serde(rename_all = "camelCase")]
+pub struct PurgeSessionsRequest {}
+
+/// How many conversations the purge removed.
+#[derive(Debug, Default, Clone, Serialize, Deserialize, JsonSchema, JsonRpcResponse)]
+#[serde(rename_all = "camelCase")]
+pub struct PurgeSessionsResponse {
+    pub deleted: u64,
+}
+
 /// List all tools available in a session.
 #[derive(Debug, Default, Clone, Serialize, Deserialize, JsonSchema, JsonRpcRequest)]
 #[request(method = "_goose/unstable/tools/list", response = GetToolsResponse)]

@@ -46,6 +46,14 @@ impl GooseAcpAgent {
         self.on_remove_session_extension(req).await
     }
 
+    #[custom_method(PurgeSessionsRequest)]
+    async fn dispatch_purge_sessions(
+        &self,
+        _req: PurgeSessionsRequest,
+    ) -> Result<PurgeSessionsResponse, agent_client_protocol::Error> {
+        self.on_purge_sessions().await
+    }
+
     #[custom_method(GetToolsRequest)]
     async fn dispatch_get_tools(
         &self,

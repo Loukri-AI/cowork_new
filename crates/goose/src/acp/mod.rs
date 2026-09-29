@@ -20,6 +20,7 @@ pub use provider::{
 /// Set by the ACP server, read by the provider to tell a spent account apart from a
 /// prompt the agent could not accept.
 pub(crate) const CREDITS_EXHAUSTED_REASON: &str = "credits_exhausted";
+pub(crate) const CONTEXT_LENGTH_EXCEEDED_REASON: &str = "context_length_exceeded";
 
 pub(crate) fn configured_model_for_provider(
     config: &crate::config::Config,

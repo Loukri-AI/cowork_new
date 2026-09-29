@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '../ui/button';
 import { useConfig } from '../ConfigContext';
 import { acpSaveProviderConfig } from '../../acp/providers';
+import { acpPurgeSessions } from '../../acp/sessions';
 import { defineMessages, useIntl } from '../../i18n';
 
 export const TOKENKEY_IDENTITY_KEY = 'TOKENKEY_IDENTITY';
@@ -15,6 +16,23 @@ export interface TokenKeyIdentity {
 
 interface SignedInPayload extends TokenKeyIdentity {
   apiKey: string;
+}
+
+async function purgeIfAccountChanged(
+  read: (key: string, isSecret: boolean) => Promise<unknown>,
+  incomingUserId: string
+): Promise<void> {
+  let previousUserId: string | null = null;
+  try {
+    const stored = await read(TOKENKEY_IDENTITY_KEY, false);
+    if (stored && typeof stored === 'object' && 'user' in (stored as object)) {
+      previousUserId = (stored as TokenKeyIdentity).user.id;
+    }
+  } catch {
+    // Nothing stored, so treat this as an account change and purge.
+  }
+  if (previousUserId === incomingUserId) return;
+  await acpPurgeSessions();
 }
 
 const i18n = defineMessages({
@@ -47,7 +65,7 @@ export default function TokenKeySignIn({
   onConfigured: (providerName: string, modelId?: string) => void | Promise<void>;
 }) {
   const intl = useIntl();
-  const { upsert } = useConfig();
+  const { upsert, read } = useConfig();
   const [state, setState] = useState<'idle' | 'waiting' | 'saving'>('idle');
   const [error, setError] = useState<string | null>(null);
   const stateRef = useRef(state);
@@ -59,6 +77,11 @@ export default function TokenKeySignIn({
       setState('saving');
       setError(null);
       try {
+        // A different person is taking over this computer, so nothing from the
+        // previous account may remain readable. This runs on every sign-in
+        // whose account does not match the stored one, which also covers a
+        // sign-out whose own purge failed and a key that was pasted in.
+        await purgeIfAccountChanged(read, data.user.id);
         await acpSaveProviderConfig('tokenkey', [{ key: 'TOKENKEY_API_KEY', value: data.apiKey }]);
         const identity: TokenKeyIdentity = {
           user: data.user,
@@ -84,7 +107,7 @@ export default function TokenKeySignIn({
       window.electron.off('tokenkey-signed-in', onSignedIn);
       window.electron.off('tokenkey-sign-in-failed', onFailed);
     };
-  }, [onConfigured, upsert]);
+  }, [onConfigured, upsert, read]);
 
   const start = async () => {
     setError(null);

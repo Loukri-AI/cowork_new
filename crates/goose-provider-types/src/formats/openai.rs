@@ -1141,6 +1141,18 @@ fn stream_error_text(value: &Value) -> Option<String> {
 /// bug this skip exists to avoid. The converse matters just as much — a gateway that
 /// rate-limits with a bare `{"statusCode": 429, "message": …}` on an HTTP 200 must not be
 /// silently skipped, or a failed turn is reported as an empty successful one.
+/// Classify a mid-stream error the same way an HTTP status would be.
+///
+/// A context overflow reported inside an SSE stream used to become a generic
+/// `ServerError`, which is retryable and triggers no compaction, so the caller
+/// spun without ever telling the user the conversation was too long.
+fn stream_error_to_provider_error(payload: &Value, message: String) -> ProviderError {
+    if crate::context_limit::is_context_length_exceeded(Some(payload), &message) {
+        return ProviderError::ContextLengthExceeded(message);
+    }
+    ProviderError::ServerError(message)
+}
+
 fn classify_choiceless_frame(value: &Value) -> Option<ProviderError> {
     let status = ["status", "statusCode", "code"].iter().find_map(|key| {
         let raw = value.get(*key)?;
@@ -1165,7 +1177,7 @@ fn classify_choiceless_frame(value: &Value) -> Option<ProviderError> {
             Some(s) => format!("Gateway returned status {s} mid-stream"),
             None => "Unknown server error".to_string(),
         });
-    Some(ProviderError::ServerError(details))
+    Some(stream_error_to_provider_error(value, details))
 }
 
 /// Parse one SSE `data:` payload.
@@ -1193,7 +1205,7 @@ fn parse_streaming_chunk(line: &str) -> Result<Option<StreamingChunk>, ProviderE
             .get("message")
             .and_then(|m| m.as_str())
             .unwrap_or("Unknown server error");
-        return Err(ProviderError::ServerError(message.to_string()));
+        return Err(stream_error_to_provider_error(&value, message.to_string()));
     }
 
     if value.get("object").and_then(|o| o.as_str()) == Some("error") {
@@ -1201,7 +1213,7 @@ fn parse_streaming_chunk(line: &str) -> Result<Option<StreamingChunk>, ProviderE
             .get("message")
             .and_then(|m| m.as_str())
             .unwrap_or("Unknown server error");
-        return Err(ProviderError::ServerError(message.to_string()));
+        return Err(stream_error_to_provider_error(&value, message.to_string()));
     }
 
     if value
@@ -5020,6 +5032,42 @@ data: [DONE]"#;
             err.to_string().contains("rate limited"),
             "the gateway's message must reach the caller: {err}"
         );
+    }
+
+    /// A context overflow reported inside the stream has to classify as
+    /// `ContextLengthExceeded`, not `ServerError`. `ServerError` is retryable
+    /// and triggers no compaction, so the caller retried in silence and the
+    /// user watched a spinner instead of being told the chat was too long.
+    #[test]
+    fn test_streaming_context_length_error_is_classified() {
+        let line = r#"{"error":{"message":"This model's maximum context length is 32768 tokens. However, you requested 40000 tokens.","type":"invalid_request_error"}}"#;
+        match parse_streaming_chunk(line) {
+            Err(ProviderError::ContextLengthExceeded(message)) => {
+                assert!(message.contains("maximum context length"));
+            }
+            other => panic!("expected ContextLengthExceeded, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn test_streaming_context_length_error_by_code_is_classified() {
+        let line =
+            r#"{"error":{"message":"Request body too large.","code":"context_length_exceeded"}}"#;
+        assert!(matches!(
+            parse_streaming_chunk(line),
+            Err(ProviderError::ContextLengthExceeded(_))
+        ));
+    }
+
+    /// An ordinary upstream failure must stay a `ServerError` so it keeps its
+    /// retry behaviour.
+    #[test]
+    fn test_streaming_generic_error_stays_server_error() {
+        let line = r#"{"error":{"message":"upstream engine crashed"}}"#;
+        assert!(matches!(
+            parse_streaming_chunk(line),
+            Err(ProviderError::ServerError(_))
+        ));
     }
 
     #[test]

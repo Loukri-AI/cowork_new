@@ -506,6 +506,11 @@ impl SessionManager {
         self.storage.delete_session(id).await
     }
 
+    /// Erase every locally stored conversation. Returns how many were removed.
+    pub async fn purge_all_sessions(&self) -> Result<u64> {
+        self.storage.purge_all_sessions().await
+    }
+
     pub async fn get_insights(&self) -> Result<SessionInsights> {
         self.storage
             .get_insights(&[SessionType::User, SessionType::Scheduled])
@@ -2313,6 +2318,50 @@ impl SessionStorage {
 
         tx.commit().await?;
         Ok(())
+    }
+
+    /// Erase every locally stored conversation.
+    ///
+    /// Signing out of one TokenKey account and into another must not leave the
+    /// first person's conversations readable by the second, so this clears the
+    /// message-bearing tables rather than looping `delete_session`, which
+    /// leaves `thread_messages` behind.
+    async fn purge_all_sessions(&self) -> Result<u64> {
+        let pool = self.pool().await?;
+        let mut tx = pool.begin_with("BEGIN IMMEDIATE").await?;
+
+        let sessions: u64 = sqlx::query_scalar::<_, i64>("SELECT COUNT(*) FROM sessions")
+            .fetch_one(&mut *tx)
+            .await? as u64;
+
+        sqlx::query("DELETE FROM messages")
+            .execute(&mut *tx)
+            .await?;
+        sqlx::query("DELETE FROM usage_ledger")
+            .execute(&mut *tx)
+            .await?;
+        sqlx::query("DELETE FROM sessions")
+            .execute(&mut *tx)
+            .await?;
+
+        // `threads` and `thread_messages` are created by migration 10, so they
+        // exist only on installs upgraded through it — a fresh database stamps
+        // CURRENT_SCHEMA_VERSION and never runs that migration. Where they do
+        // exist they hold message text, so they have to go too.
+        let has_threads: bool = sqlx::query_scalar(
+            "SELECT EXISTS (SELECT 1 FROM sqlite_master WHERE type='table' AND name='threads')",
+        )
+        .fetch_one(&mut *tx)
+        .await?;
+        if has_threads {
+            sqlx::query("DELETE FROM thread_messages")
+                .execute(&mut *tx)
+                .await?;
+            sqlx::query("DELETE FROM threads").execute(&mut *tx).await?;
+        }
+
+        tx.commit().await?;
+        Ok(sessions)
     }
 
     async fn get_insights(&self, types: &[SessionType]) -> Result<SessionInsights> {
@@ -4990,6 +5039,80 @@ mod tests {
 
         sm.delete_session(&id).await.unwrap();
         assert!(sm.get_session(&id, false).await.is_err());
+    }
+
+    /// Signing out must leave nothing of the previous account behind. The
+    /// per-session delete path does not clear `thread_messages`, which holds
+    /// message text, so the purge is tested against that table directly.
+    #[tokio::test]
+    async fn test_purge_all_sessions_leaves_no_message_text() {
+        let temp_dir = TempDir::new().unwrap();
+        let sm = SessionManager::new(temp_dir.path().to_path_buf());
+
+        let first = new_session(&sm).await;
+        let second = new_session(&sm).await;
+        seed_ledger(&sm, &first, &message_usage(100, 20, 0.10, false))
+            .await
+            .unwrap();
+
+        let pool = sm.storage().pool().await.unwrap();
+        // Mirror an install upgraded through migration 10, which is where the
+        // thread tables come from; a fresh database does not have them.
+        sqlx::query("CREATE TABLE IF NOT EXISTS threads (id TEXT PRIMARY KEY, name TEXT NOT NULL)")
+            .execute(pool)
+            .await
+            .unwrap();
+        sqlx::query(
+            "CREATE TABLE IF NOT EXISTS thread_messages (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                thread_id TEXT NOT NULL,
+                session_id TEXT,
+                role TEXT NOT NULL,
+                content_json TEXT NOT NULL,
+                created_timestamp INTEGER NOT NULL
+            )",
+        )
+        .execute(pool)
+        .await
+        .unwrap();
+        sqlx::query("INSERT INTO threads (id, name) VALUES (?, ?)")
+            .bind("thread-1")
+            .bind("Private chat")
+            .execute(pool)
+            .await
+            .unwrap();
+        sqlx::query(
+            "INSERT INTO thread_messages (thread_id, session_id, role, content_json, created_timestamp)
+             VALUES (?, ?, ?, ?, ?)",
+        )
+        .bind("thread-1")
+        .bind(&first)
+        .bind("user")
+        .bind(r#"{"text":"my private question"}"#)
+        .bind(0_i64)
+        .execute(pool)
+        .await
+        .unwrap();
+
+        let deleted = sm.purge_all_sessions().await.unwrap();
+        assert_eq!(deleted, 2);
+
+        assert!(sm.get_session(&first, false).await.is_err());
+        assert!(sm.get_session(&second, false).await.is_err());
+        assert!(sm.list_sessions().await.unwrap().is_empty());
+
+        for table in ["messages", "usage_ledger", "threads", "thread_messages"] {
+            let remaining: i64 = match table {
+                "messages" => sqlx::query_scalar("SELECT COUNT(*) FROM messages"),
+                "usage_ledger" => sqlx::query_scalar("SELECT COUNT(*) FROM usage_ledger"),
+                "threads" => sqlx::query_scalar("SELECT COUNT(*) FROM threads"),
+                _ => sqlx::query_scalar("SELECT COUNT(*) FROM thread_messages"),
+            }
+            .fetch_one(pool)
+            .await
+            .unwrap();
+            assert_eq!(remaining, 0, "{table} still holds rows after the purge");
+        }
     }
 
     #[tokio::test]

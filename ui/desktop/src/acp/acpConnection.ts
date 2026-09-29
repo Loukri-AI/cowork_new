@@ -8,6 +8,7 @@ import {
   handleAcpProviderDeviceCodeNotification,
   handleAcpSessionNotification,
 } from './chatNotifications';
+import { acpChatSessionActions } from './chatSessionStore';
 import { requestAcpElicitation } from './elicitationRequests';
 import {
   connectGooseAcpClient,
@@ -172,6 +173,9 @@ async function openConnection(generation: number): Promise<AcpConnection> {
     currentConnection = connection;
     const handleClose = () => {
       if (currentConnection === connection) {
+        // Nothing else can end a turn that was in flight when the connection
+        // went away, so the progress indicator would otherwise run forever.
+        acpChatSessionActions.clearAllActivePromptAttempts();
         recoverConnection(false);
       }
     };

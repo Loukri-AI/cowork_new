@@ -112,6 +112,11 @@ export interface AcpChatSessionActions {
   waitForPromptCancellation(sessionId: string, promptAttemptId: string): Promise<void>;
   finishPromptAttemptIfCurrent(sessionId: string, promptAttemptId: string): boolean;
   clearActivePromptAttempt(sessionId: string): AcpChatSessionSnapshot | undefined;
+  /**
+   * Stop every in-progress turn. Used when the backend connection drops, which
+   * otherwise leaves the progress indicator running with nothing to end it.
+   */
+  clearAllActivePromptAttempts(): void;
   isCurrentPromptAttempt(sessionId: string, promptAttemptId: string): boolean;
 }
 
@@ -444,6 +449,17 @@ function createAcpChatSessionStoreInternal(): AcpChatSessionStoreInternal {
     return notify(sessionId, entry);
   };
 
+  const clearAllActivePromptAttempts: AcpChatSessionActions['clearAllActivePromptAttempts'] =
+    () => {
+      for (const sessionId of [...sessionsById.keys()]) {
+        const entry = sessionsById.get(sessionId);
+        if (!entry || entry.activePromptAttemptId === null) {
+          continue;
+        }
+        clearActivePromptAttempt(sessionId);
+      }
+    };
+
   const isCurrentPromptAttempt: AcpChatSessionActions['isCurrentPromptAttempt'] = (
     sessionId,
     promptAttemptId
@@ -563,6 +579,7 @@ function createAcpChatSessionStoreInternal(): AcpChatSessionStoreInternal {
     waitForPromptCancellation,
     finishPromptAttemptIfCurrent,
     clearActivePromptAttempt,
+    clearAllActivePromptAttempts,
     isCurrentPromptAttempt,
     applyAcpSessionNotification,
     applyAcpGooseSessionNotification,
@@ -643,6 +660,7 @@ function actionsFromStore(store: AcpChatSessionStoreInternal): AcpChatSessionAct
     waitForPromptCancellation: store.waitForPromptCancellation,
     finishPromptAttemptIfCurrent: store.finishPromptAttemptIfCurrent,
     clearActivePromptAttempt: store.clearActivePromptAttempt,
+    clearAllActivePromptAttempts: store.clearAllActivePromptAttempts,
     isCurrentPromptAttempt: store.isCurrentPromptAttempt,
   };
 }

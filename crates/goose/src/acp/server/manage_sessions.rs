@@ -95,6 +95,33 @@ impl GooseAcpAgent {
         Ok(EmptyResponse {})
     }
 
+    pub(super) async fn on_purge_sessions(
+        &self,
+    ) -> Result<PurgeSessionsResponse, agent_client_protocol::Error> {
+        let ids: Vec<String> = self.sessions.lock().await.keys().cloned().collect();
+        for id in &ids {
+            self.active_runs.cancel_agent_run(id);
+            self.live_voice.stop_session_interaction(id).await;
+        }
+
+        let deleted = self
+            .session_manager
+            .purge_all_sessions()
+            .await
+            .internal_err()?;
+
+        self.sessions.lock().await.clear();
+        for id in &ids {
+            self.agent_manager
+                .remove_session_if_loaded(id)
+                .await
+                .internal_err_ctx("Failed to remove in-memory agent")?;
+        }
+
+        tracing::info!(deleted, "purged local conversation history on sign-out");
+        Ok(PurgeSessionsResponse { deleted })
+    }
+
     pub(super) async fn on_delete_session(
         &self,
         req: DeleteSessionRequest,

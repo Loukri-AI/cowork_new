@@ -100,3 +100,6 @@ gooseselftest/
 
 live-in-desktop-design
 .gstack/
+
+# Reference material dropped in by hand, not part of the build
+assets/

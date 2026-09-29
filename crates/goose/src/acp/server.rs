@@ -1666,6 +1666,23 @@ fn prompt_error_from_message_content(
         {
             Some(credits_exhausted_prompt_error(notification))
         }
+        // Without this arm a context overflow reaches the UI as an untyped
+        // paragraph of text, so the desktop app cannot tell it apart from any
+        // other failure and leaves its progress indicator running.
+        MessageContent::Error(error)
+            if error.kind
+                == crate::conversation::message::MessageErrorKind::ContextLengthExceeded =>
+        {
+            let mut data = serde_json::Map::new();
+            data.insert(
+                "reason".to_string(),
+                serde_json::Value::String(crate::acp::CONTEXT_LENGTH_EXCEEDED_REASON.to_string()),
+            );
+            Some(
+                agent_client_protocol::Error::new(-32603, error.message.clone())
+                    .data(serde_json::Value::Object(data)),
+            )
+        }
         MessageContent::Error(error)
             if error.kind == crate::conversation::message::MessageErrorKind::CreditsExhausted =>
         {

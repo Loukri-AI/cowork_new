@@ -3,6 +3,7 @@ import { Button } from '../../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui/card';
 import { useConfig } from '../../ConfigContext';
 import { TOKENKEY_IDENTITY_KEY, type TokenKeyIdentity } from '../../onboarding/TokenKeySignIn';
+import { acpPurgeSessions } from '../../../acp/sessions';
 import { defineMessages, useIntl } from '../../../i18n';
 
 const i18n = defineMessages({
@@ -24,7 +25,7 @@ const i18n = defineMessages({
   signOutHint: {
     id: 'tokenKeyAccount.signOutHint',
     defaultMessage:
-      'Removes the key from this computer and returns to the sign-in screen. Conversations stay on this computer. To stop the key itself, revoke it in the TokenKey console.',
+      'Removes the key from this computer, deletes every conversation stored here, and returns to the sign-in screen. To stop the key itself, revoke it in the TokenKey console.',
   },
   manage: { id: 'tokenKeyAccount.manage', defaultMessage: 'Open the TokenKey console' },
 });
@@ -54,6 +55,9 @@ export default function TokenKeyAccountSection() {
   const signOut = async () => {
     setBusy(true);
     try {
+      // Erase conversations first. If this fails the sign-out still proceeds,
+      // because the sign-in path purges again whenever the account changes.
+      await acpPurgeSessions().catch(() => undefined);
       await remove('TOKENKEY_API_KEY', true).catch(() => undefined);
       await remove(TOKENKEY_IDENTITY_KEY, false).catch(() => undefined);
       await remove('GOOSE_PROVIDER', false).catch(() => undefined);

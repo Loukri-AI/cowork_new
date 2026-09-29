@@ -275,6 +275,21 @@ export async function acpDeleteSession(sessionId: string): Promise<void> {
   await client.connection.agent.request(methods.agent.session.delete, { sessionId });
 }
 
+/**
+ * Erase every conversation stored on this computer.
+ *
+ * Called when someone signs out of a TokenKey account so the next person to
+ * sign in here cannot read the previous account's chats.
+ */
+export async function acpPurgeSessions(): Promise<number> {
+  const client = await getAcpClient();
+  const response = (await client.connection.agent.request(
+    '_goose/unstable/sessions/purge',
+    {}
+  )) as { deleted?: number };
+  return response?.deleted ?? 0;
+}
+
 export async function acpCloseSession(sessionId: string): Promise<void> {
   const client = await getAcpClient();
   await client.connection.agent.request(methods.agent.session.close, { sessionId });

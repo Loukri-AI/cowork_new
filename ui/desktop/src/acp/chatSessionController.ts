@@ -20,6 +20,7 @@ import {
   formatAcpError,
   parseAcpCreditsExhaustedError,
   type AcpCreditsExhaustedError,
+  isAcpContextLengthExceeded,
 } from './errors';
 import { cancelAcpPermissionRequestsForSession } from './permissionRequests';
 import { acpCancelPrompt, acpPromptSession } from './prompt';
@@ -214,7 +215,11 @@ async function submitMessage(
       return;
     }
 
-    const submitError = formatAcpError(error);
+    // A context overflow is not a server fault and retrying will not help, so
+    // say what happened and what to do instead of showing a raw upstream error.
+    const submitError = isAcpContextLengthExceeded(error)
+      ? 'This conversation is too long for the model. Start a new chat, or remove some earlier messages, and try again.'
+      : formatAcpError(error);
     if (acpChatSessionActions.finishPromptAttemptIfCurrent(sessionId, promptAttemptId)) {
       void options.onFinish(submitError);
     }

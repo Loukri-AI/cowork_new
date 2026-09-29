@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { RequestError } from '@agentclientprotocol/sdk';
-import { formatAcpError, parseAcpCreditsExhaustedError } from '../errors';
+import {
+  formatAcpError,
+  parseAcpCreditsExhaustedError,
+  isAcpContextLengthExceeded,
+} from '../errors';
 
 describe('formatAcpError', () => {
   it('explains how to recover from an authentication error', () => {
@@ -53,5 +57,26 @@ describe('parseAcpCreditsExhaustedError', () => {
         },
       })
     ).toBeNull();
+  });
+});
+
+describe('isAcpContextLengthExceeded', () => {
+  it('recognises the context-length reason from the backend', () => {
+    expect(
+      isAcpContextLengthExceeded({
+        message: 'Context length exceeded',
+        data: { reason: 'context_length_exceeded' },
+      })
+    ).toBe(true);
+  });
+
+  it('does not match a different failure', () => {
+    expect(
+      isAcpContextLengthExceeded({
+        message: 'Out of credits',
+        data: { reason: 'credits_exhausted' },
+      })
+    ).toBe(false);
+    expect(isAcpContextLengthExceeded(new Error('boom'))).toBe(false);
   });
 });
