@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Zap, AlertCircle, Plus } from 'lucide-react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { Zap, AlertCircle, Plus, Upload } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
@@ -10,9 +10,26 @@ import { getInitialWorkingDir } from '../../utils/workingDir';
 import { defineMessages, useIntl } from '../../i18n';
 import { SearchView } from '../conversation/SearchView';
 import { getSearchShortcutText } from '../../utils/keyboardShortcuts';
-import { listSkillSources } from '../../acp/sources';
+import { listSkillSources, importSkillBundle } from '../../acp/sources';
+import { toast } from 'react-toastify';
 
 const i18n = defineMessages({
+  importSkill: {
+    id: 'skillsView.importSkill',
+    defaultMessage: 'Import skill',
+  },
+  importSkillHint: {
+    id: 'skillsView.importSkillHint',
+    defaultMessage: 'Install a .skill file someone shared with you',
+  },
+  importSucceeded: {
+    id: 'skillsView.importSucceeded',
+    defaultMessage: 'Installed the skill {name}',
+  },
+  importFailed: {
+    id: 'skillsView.importFailed',
+    defaultMessage: 'Could not install that skill: {error}',
+  },
   errorLoadingSkills: {
     id: 'skillsView.errorLoadingSkills',
     defaultMessage: 'Error Loading Skills',
@@ -101,6 +118,8 @@ export default function SkillsView() {
   const [error, setError] = useState<string | null>(null);
   const [showContent, setShowContent] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [importing, setImporting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const filteredSkills = useMemo(() => {
     if (!searchTerm) return skills;
@@ -130,6 +149,30 @@ export default function SkillsView() {
       setLoading(false);
     }
   }, []);
+
+  const handleBundleChosen = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      // Clear it straight away so choosing the same file twice still fires.
+      event.target.value = '';
+      if (!file) return;
+
+      setImporting(true);
+      try {
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        const source = await importSkillBundle(bytes, getInitialWorkingDir());
+        toast.success(intl.formatMessage(i18n.importSucceeded, { name: source.name }));
+        await loadSkills();
+      } catch (err) {
+        toast.error(
+          intl.formatMessage(i18n.importFailed, { error: errorMessage(err, 'Unknown error') })
+        );
+      } finally {
+        setImporting(false);
+      }
+    },
+    [intl, loadSkills]
+  );
 
   useEffect(() => {
     loadSkills();
@@ -207,16 +250,36 @@ export default function SkillsView() {
           <div className="flex flex-col page-transition">
             <div className="flex justify-between items-center mb-1">
               <h1 className="text-4xl font-light">{intl.formatMessage(i18n.skillsTitle)}</h1>
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-2"
-                hidden
-                title={intl.formatMessage(i18n.comingSoon)}
-              >
-                <Plus className="w-4 h-4" />
-                {intl.formatMessage(i18n.addSkill)}
-              </Button>
+              <div className="flex items-center gap-2">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".skill,.zip"
+                  className="hidden"
+                  onChange={handleBundleChosen}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                  disabled={importing}
+                  onClick={() => fileInputRef.current?.click()}
+                  title={intl.formatMessage(i18n.importSkillHint)}
+                >
+                  <Upload className="w-4 h-4" />
+                  {intl.formatMessage(i18n.importSkill)}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                  hidden
+                  title={intl.formatMessage(i18n.comingSoon)}
+                >
+                  <Plus className="w-4 h-4" />
+                  {intl.formatMessage(i18n.addSkill)}
+                </Button>
+              </div>
             </div>
             <p className="text-sm text-text-secondary mb-1">
               {intl.formatMessage(i18n.skillsDescription, {

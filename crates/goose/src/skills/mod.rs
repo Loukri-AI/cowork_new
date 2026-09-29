@@ -4,6 +4,7 @@
 
 mod arguments;
 mod builtin;
+pub mod bundle;
 pub mod client;
 mod supporting_files;
 

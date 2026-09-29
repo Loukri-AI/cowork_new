@@ -18,6 +18,36 @@ impl GooseAcpAgent {
         Ok(CreateSourceResponse { source })
     }
 
+    pub(super) async fn on_import_skill_bundle(
+        &self,
+        req: ImportSkillBundleRequest,
+    ) -> Result<ImportSkillBundleResponse, agent_client_protocol::Error> {
+        use base64::Engine as _;
+        let bytes = base64::engine::general_purpose::STANDARD
+            .decode(req.data.as_bytes())
+            .map_err(|e| {
+                agent_client_protocol::Error::invalid_params()
+                    .data(format!("Bundle is not valid base64: {e}"))
+            })?;
+        let source =
+            crate::skills::bundle::import_bundle(&bytes, req.global, req.project_dir.as_deref())?;
+        Ok(ImportSkillBundleResponse { source })
+    }
+
+    pub(super) async fn on_export_skill_bundle(
+        &self,
+        req: ExportSkillBundleRequest,
+    ) -> Result<ExportSkillBundleResponse, agent_client_protocol::Error> {
+        use base64::Engine as _;
+        let dir = crate::skills::resolve_skill_dir(&req.path)?;
+        let name = crate::skills::infer_skill_name(&dir);
+        let bytes = crate::skills::bundle::export_bundle(&dir, &name)?;
+        Ok(ExportSkillBundleResponse {
+            data: base64::engine::general_purpose::STANDARD.encode(&bytes),
+            filename: format!("{name}.skill"),
+        })
+    }
+
     pub(super) async fn on_list_sources(
         &self,
         req: ListSourcesRequest,

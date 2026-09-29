@@ -726,6 +726,22 @@ impl GooseAcpAgent {
         self.on_create_source(req).await
     }
 
+    #[custom_method(ImportSkillBundleRequest)]
+    async fn dispatch_import_skill_bundle(
+        &self,
+        req: ImportSkillBundleRequest,
+    ) -> Result<ImportSkillBundleResponse, agent_client_protocol::Error> {
+        self.on_import_skill_bundle(req).await
+    }
+
+    #[custom_method(ExportSkillBundleRequest)]
+    async fn dispatch_export_skill_bundle(
+        &self,
+        req: ExportSkillBundleRequest,
+    ) -> Result<ExportSkillBundleResponse, agent_client_protocol::Error> {
+        self.on_export_skill_bundle(req).await
+    }
+
     #[custom_method(ListSourcesRequest)]
     async fn dispatch_list_sources(
         &self,

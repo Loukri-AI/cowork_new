@@ -47,6 +47,46 @@ pub struct RemoveSessionExtensionRequest {
     pub extension_key: String,
 }
 
+/// Install a `.skill` bundle that someone downloaded or was sent.
+///
+/// The zip arrives base64-encoded because JSON-RPC carries no binary.
+#[derive(Debug, Default, Clone, Serialize, Deserialize, JsonSchema, JsonRpcRequest)]
+#[request(method = "_goose/unstable/skills/bundle/import", response = ImportSkillBundleResponse)]
+#[serde(rename_all = "camelCase")]
+pub struct ImportSkillBundleRequest {
+    /// The `.skill` zip, base64-encoded.
+    pub data: String,
+    /// Install for every project rather than only the current one.
+    #[serde(default)]
+    pub global: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub project_dir: Option<String>,
+}
+
+/// The skill the bundle installed.
+#[derive(Debug, Default, Clone, Serialize, Deserialize, JsonSchema, JsonRpcResponse)]
+#[serde(rename_all = "camelCase")]
+pub struct ImportSkillBundleResponse {
+    pub source: SourceEntry,
+}
+
+/// Pack an installed skill into a `.skill` bundle for sharing.
+#[derive(Debug, Default, Clone, Serialize, Deserialize, JsonSchema, JsonRpcRequest)]
+#[request(method = "_goose/unstable/skills/bundle/export", response = ExportSkillBundleResponse)]
+#[serde(rename_all = "camelCase")]
+pub struct ExportSkillBundleRequest {
+    /// Path of the skill to pack, as listed by the sources API.
+    pub path: String,
+}
+
+/// The packed bundle, base64-encoded, and the filename to offer.
+#[derive(Debug, Default, Clone, Serialize, Deserialize, JsonSchema, JsonRpcResponse)]
+#[serde(rename_all = "camelCase")]
+pub struct ExportSkillBundleResponse {
+    pub data: String,
+    pub filename: String,
+}
+
 /// Erase every locally stored conversation.
 ///
 /// Loukri AI CoWork calls this when someone signs out of a TokenKey account, so
