@@ -1828,6 +1828,45 @@ mod tests {
         assert!(!builtin.content.is_empty());
     }
 
+    /// The coursework skills are compiled into the binary, so a typo in one
+    /// file's frontmatter would silently drop that skill from every install.
+    #[test]
+    fn coursework_builtin_skills_all_parse_and_are_listed() {
+        let listed = list_sources(Some(SourceType::BuiltinSkill), None, false).unwrap();
+        let names: Vec<&str> = listed.iter().map(|s| s.name.as_str()).collect();
+
+        for expected in [
+            "circuit-analysis",
+            "debug-my-code",
+            "digital-design-hdl",
+            "dsa-problem-solving",
+            "embedded-systems",
+            "engineering-mechanics",
+            "lab-record-and-report",
+            "placement-aptitude",
+            "sql-and-databases",
+            "technical-resume",
+            "technical-seminar",
+            "thermodynamics-and-fluids",
+        ] {
+            assert!(
+                names.contains(&expected),
+                "builtin skill {expected} is missing; names listed: {names:?}"
+            );
+        }
+
+        // Every one needs a description: it is the only thing the model sees
+        // before deciding whether to load the skill.
+        for source in &listed {
+            assert!(
+                !source.description.trim().is_empty(),
+                "builtin skill {} has no description",
+                source.name
+            );
+            assert!(!source.content.is_empty());
+        }
+    }
+
     #[test]
     fn list_skill_excludes_builtin_skills() {
         let listed = list_sources(Some(SourceType::Skill), None, false).unwrap();

@@ -213,10 +213,14 @@ pub static PLATFORM_EXTENSIONS: Lazy<HashMap<&'static str, PlatformExtensionDef>
                 name: crate::skills::EXTENSION_NAME,
                 display_name: "Skills",
                 description: "Discover and provide skill instructions from filesystem and builtins",
-                // Loukri AI CoWork: disabled by default — the global skills
-                // index adds thousands of tokens to every request's system
-                // prompt, which dominates time-to-first-token.
-                default_enabled: false,
+                // Loukri AI CoWork: on, carrying the built-in skills written
+                // for VVIT coursework. The index is name and description only
+                // (~900 tokens); a skill's body is fetched by load_skill when
+                // the model actually wants it. Those ~900 tokens are identical
+                // on every request and sit at the front of the system prompt,
+                // so prefix caching removes them almost entirely once it is
+                // enabled on the fast tier.
+                default_enabled: true,
                 unprefixed_tools: true,
                 hidden: false,
                 client_factory: |ctx| {
