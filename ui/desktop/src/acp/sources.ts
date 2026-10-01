@@ -93,3 +93,12 @@ function base64ToBytes(data: string): Uint8Array {
   }
   return bytes;
 }
+
+/** Remove an installed skill from this computer. */
+export async function deleteSkillSource(path: string): Promise<void> {
+  const client = await getAcpClient();
+  await client.connection.agent.request('_goose/unstable/sources/delete', {
+    type: 'skill',
+    path,
+  });
+}

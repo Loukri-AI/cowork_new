@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { Zap, AlertCircle, Plus, Upload } from 'lucide-react';
+import { Zap, AlertCircle, Plus, Upload, MoreVertical, Download, Trash2 } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
@@ -10,7 +10,18 @@ import { getInitialWorkingDir } from '../../utils/workingDir';
 import { defineMessages, useIntl } from '../../i18n';
 import { SearchView } from '../conversation/SearchView';
 import { getSearchShortcutText } from '../../utils/keyboardShortcuts';
-import { listSkillSources, importSkillBundle } from '../../acp/sources';
+import {
+  listSkillSources,
+  importSkillBundle,
+  exportSkillBundle,
+  deleteSkillSource,
+} from '../../acp/sources';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import { toast } from 'react-toastify';
 
 const i18n = defineMessages({
@@ -75,23 +86,96 @@ const i18n = defineMessages({
     id: 'skillsView.comingSoon',
     defaultMessage: 'Coming soon',
   },
+  skillActions: {
+    id: 'skillsView.skillActions',
+    defaultMessage: 'Skill actions',
+  },
+  download: {
+    id: 'skillsView.download',
+    defaultMessage: 'Download',
+  },
+  remove: {
+    id: 'skillsView.remove',
+    defaultMessage: 'Remove',
+  },
+  builtIn: {
+    id: 'skillsView.builtIn',
+    defaultMessage: 'Built in',
+  },
+  downloadFailed: {
+    id: 'skillsView.downloadFailed',
+    defaultMessage: 'Could not download that skill: {error}',
+  },
+  removed: {
+    id: 'skillsView.removed',
+    defaultMessage: 'Removed {name}',
+  },
+  removeFailed: {
+    id: 'skillsView.removeFailed',
+    defaultMessage: 'Could not remove that skill: {error}',
+  },
 });
 
 interface SkillEntry {
   name: string;
   description: string;
+  path: string;
+  /** Built-ins ship inside the app, so they cannot be edited or removed. */
+  builtIn: boolean;
 }
 
-function SkillItem({ skill }: { skill: SkillEntry }) {
+function SkillItem({
+  skill,
+  onDownload,
+  onRemove,
+}: {
+  skill: SkillEntry;
+  onDownload: (skill: SkillEntry) => void;
+  onRemove: (skill: SkillEntry) => void;
+}) {
+  const intl = useIntl();
   return (
     <Card className="py-2 px-4 mb-2 bg-background-primary border-none hover:bg-background-secondary transition-all duration-150">
       <div className="flex justify-between items-center gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="text-base truncate">{skill.name}</h3>
+            {skill.builtIn && (
+              <span className="text-xs text-text-muted border border-border-subtle rounded px-1.5 py-0.5 shrink-0">
+                {intl.formatMessage(i18n.builtIn)}
+              </span>
+            )}
           </div>
           <p className="text-text-secondary text-sm line-clamp-2">{skill.description}</p>
         </div>
+        {/* Built-ins live inside the binary, so there is no file to hand back
+            and nothing on disk to delete. */}
+        {!skill.builtIn && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className="p-2 rounded hover:bg-background-muted shrink-0"
+                title={intl.formatMessage(i18n.skillActions)}
+                aria-label={intl.formatMessage(i18n.skillActions)}
+              >
+                <MoreVertical className="w-4 h-4 text-text-secondary" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => onDownload(skill)}>
+                <Download className="w-4 h-4 mr-2" />
+                {intl.formatMessage(i18n.download)}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => onRemove(skill)}
+                className="text-red-500 focus:text-red-500"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                {intl.formatMessage(i18n.remove)}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     </Card>
   );
@@ -141,6 +225,8 @@ export default function SkillsView() {
       const skillEntries: SkillEntry[] = sources.map((source) => ({
         name: source.name,
         description: source.description,
+        path: source.path,
+        builtIn: source.type === 'builtinSkill',
       }));
       setSkills(skillEntries);
     } catch (err) {
@@ -149,6 +235,49 @@ export default function SkillsView() {
       setLoading(false);
     }
   }, []);
+
+  const handleDownload = useCallback(
+    async (skill: SkillEntry) => {
+      try {
+        const { bytes, filename } = await exportSkillBundle(skill.path);
+        // Same hand-off the session export uses: a blob and a synthetic link.
+        // Copy out of the view: a Uint8Array can be backed by a
+        // SharedArrayBuffer, which Blob does not accept.
+        const buffer = bytes.buffer.slice(
+          bytes.byteOffset,
+          bytes.byteOffset + bytes.byteLength
+        ) as ArrayBuffer;
+        const url = URL.createObjectURL(new Blob([buffer], { type: 'application/zip' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        toast.error(
+          intl.formatMessage(i18n.downloadFailed, { error: errorMessage(err, 'Unknown error') })
+        );
+      }
+    },
+    [intl]
+  );
+
+  const handleRemove = useCallback(
+    async (skill: SkillEntry) => {
+      try {
+        await deleteSkillSource(skill.path);
+        toast.success(intl.formatMessage(i18n.removed, { name: skill.name }));
+        await loadSkills();
+      } catch (err) {
+        toast.error(
+          intl.formatMessage(i18n.removeFailed, { error: errorMessage(err, 'Unknown error') })
+        );
+      }
+    },
+    [intl, loadSkills]
+  );
 
   const handleBundleChosen = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -237,7 +366,12 @@ export default function SkillsView() {
     return (
       <div className="space-y-2">
         {filteredSkills.map((skill) => (
-          <SkillItem key={skill.name} skill={skill} />
+          <SkillItem
+            key={skill.path || skill.name}
+            skill={skill}
+            onDownload={handleDownload}
+            onRemove={handleRemove}
+          />
         ))}
       </div>
     );
