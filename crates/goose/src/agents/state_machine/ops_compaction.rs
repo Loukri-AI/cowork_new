@@ -22,6 +22,20 @@ use goose_providers::model::ModelConfig;
 const COMPACTION_THINKING_TEXT: &str = "goose is compacting the conversation...";
 
 pub(super) const MAX_CONTEXT_ERROR_COMPACTIONS: usize = 2;
+/// How many times one turn may proactively compact before giving up on it.
+///
+/// Proactive compaction repeats while the conversation is over the threshold,
+/// and it ends when compacting brings it back under. That assumes compacting
+/// can. Paste 30,000 words as a single message and it cannot: the bulk is one
+/// message, the summary is still over the threshold, and the turn compacts
+/// again, and again. QA saw ten rounds of "Compaction complete" and no answer.
+///
+/// Past this many the turn goes upstream as it stands, where it is either
+/// answered or refused in the engine's own words. Either beats a spinner.
+const MAX_PROACTIVE_COMPACTIONS: usize = 2;
+/// Marks a finished compaction in the transcript, and is what the count below
+/// looks for. Emitted on the success path at the bottom of this file.
+const COMPACTION_DONE_NOTICE: &str = "Compaction complete";
 
 fn compaction_part(
     total_tokens: Option<i32>,
@@ -247,6 +261,17 @@ impl Operation<Session, GooseEffect> for CompactionOperation {
             if last_effective_role(messages)? != EffectiveRole::User {
                 return not_applicable();
             }
+            // Stop after a couple of rounds. "Still over the threshold" is not
+            // on its own a reason to compact again: when the weight is a single
+            // enormous message there is nothing left to summarise away, and the
+            // same condition holds forever.
+            let already_compacted = messages
+                .iter()
+                .filter(|message| message.as_concat_text().contains(COMPACTION_DONE_NOTICE))
+                .count();
+            if already_compacted >= MAX_PROACTIVE_COMPACTIONS {
+                return not_applicable();
+            }
             let tokens = self.context_tokens(session, conversation).await?;
             if tokens <= 0 || !self.over_threshold(tokens as usize) {
                 return not_applicable();
@@ -303,7 +328,7 @@ impl Operation<Session, GooseEffect> for CompactionOperation {
                 record_chat_usage(&span, &usage);
                 emit.message(Message::assistant().with_system_notification(
                     SystemNotificationType::InlineMessage,
-                    "Compaction complete",
+                    COMPACTION_DONE_NOTICE,
                 ))
                 .await;
                 applied([GooseEffect::CompactConversation {
