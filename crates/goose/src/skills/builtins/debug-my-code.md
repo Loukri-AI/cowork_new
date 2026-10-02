@@ -1,6 +1,6 @@
 ---
 name: debug-my-code
-description: Find why a program crashes, loops forever, or gives the wrong output, and explain the cause. Use when a student pastes code with an error, a stack trace, a compiler message, or says their code does not work.
+description: Find why a program crashes, loops forever or gives wrong output. Use this skill whenever the user pastes code with an error, a stack trace, a compiler message, or says their code is not working. Also trigger on segmentation fault, NullPointerException, IndexOutOfBounds, IndentationError, undefined, infinite loop, "wrong answer", "why is this not working", "it compiles but", and on any pasted traceback in C, C++, Java or Python.
 ---
 
 # Debugging a student's program

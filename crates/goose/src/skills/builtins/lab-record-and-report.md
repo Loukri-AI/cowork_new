@@ -1,6 +1,6 @@
 ---
 name: lab-record-and-report
-description: Write up a laboratory experiment or a project report in the format Indian engineering colleges expect, including aim, apparatus, theory, procedure, observations, calculations, result and error analysis. Use for lab records, project documentation and technical reports.
+description: Write up an experiment or a project report in the format Indian engineering colleges expect. Use this skill whenever the user asks for a lab record, an experiment write-up, a project report, or a format to follow. Also trigger on aim, apparatus, theory, procedure, observations, tabular column, specimen calculation, result, precautions, sources of error, percentage error, least count, and on "JNTU format", "viva", "record note", "abstract", "literature survey", "final year project".
 ---
 
 # Lab records and project reports

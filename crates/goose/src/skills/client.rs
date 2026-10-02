@@ -259,8 +259,14 @@ impl McpClientTrait for SkillsClient {
             return None;
         }
 
+        // Phrasing matters more than the list does. "When it is clear they can
+        // help" left the model answering from memory on topics a skill covered:
+        // measured 2 Oct against the live fast tier, 9 of 15 student questions
+        // loaded the right skill. Telling it that answering from memory is the
+        // worse answer took the same questions and the same list to 15 of 15,
+        // and a question no skill covers still loads nothing.
         let mut instructions = String::from(
-            "\n\nYou have these skills at your disposal, when it is clear they can help you solve a problem or you are asked to use them:",
+            "\n\nYou have skills below. A skill carries the method and the marking              scheme for its subject, which you do not have otherwise.\n\n             Before answering any question that falls under one of these subjects,              you MUST call load_skill first, even when you already believe you know              the answer. Answering from memory when a skill covers the topic gives              a worse answer than the skill would. Only skip load_skill when no skill              below covers the question.\n",
         );
         for skill in &skills {
             instructions.push_str(&format!("\n• {} - {}", skill.name, skill.description));

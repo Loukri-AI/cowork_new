@@ -1,6 +1,6 @@
 ---
 name: embedded-systems
-description: Write and debug firmware for Arduino, ESP32, STM32, 8051 or Raspberry Pi, including GPIO, timers, interrupts, ADC, PWM and serial protocols. Use for electronics lab work, mini projects, or microcontroller coursework.
+description: Write and debug microcontroller firmware. Use this skill whenever the user mentions Arduino, ESP32, ESP8266, STM32, 8051, AVR, PIC or Raspberry Pi, or asks about GPIO, timers, interrupts, ADC, PWM, UART, I2C or SPI. Also trigger on sensors and modules (DHT11, HC-SR04, servo, relay, LCD, OLED, MPU6050, L298N), on "my sensor reads garbage", "the board resets", "IoT project", and on embedded or microcontroller lab work.
 ---
 
 # Microcontroller firmware

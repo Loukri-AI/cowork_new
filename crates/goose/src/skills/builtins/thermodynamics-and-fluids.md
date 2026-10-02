@@ -1,6 +1,6 @@
 ---
 name: thermodynamics-and-fluids
-description: Solve thermodynamics and fluid mechanics problems including the first and second laws, steam and gas cycles, entropy, Bernoulli, pipe losses and dimensional analysis. Use for mechanical engineering coursework and lab calculations.
+description: Solve thermodynamics and fluid mechanics problems. Use this skill whenever the user asks about heat, work, entropy, enthalpy, a cycle or a flow. Also trigger on first law, second law, Carnot, Otto, Diesel, Brayton, Rankine, steam tables, dryness fraction, isothermal, adiabatic, polytropic, COP, refrigeration, Bernoulli, continuity, Reynolds number, laminar, turbulent, head loss, friction factor, Moody chart, pump, turbine, and on "fluid mechanics lab", "thermal engineering".
 ---
 
 # Thermodynamics and fluid mechanics

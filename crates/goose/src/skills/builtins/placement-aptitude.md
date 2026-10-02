@@ -1,6 +1,6 @@
 ---
 name: placement-aptitude
-description: Solve and explain quantitative aptitude, logical reasoning and verbal questions used in campus placement tests at Indian companies. Use for aptitude practice, shortcuts, or preparing for a specific company's test pattern.
+description: Solve campus placement aptitude, reasoning and verbal questions. Use this skill whenever the user asks for an aptitude or reasoning question, a shortcut, or practice for a company test. Also trigger on time and work, time speed and distance, trains, boats and streams, pipes and cisterns, percentages, profit and loss, ratio, averages, mixtures and alligation, ages, simple and compound interest, permutations, combinations, probability, number systems, HCF and LCM, seating arrangement, blood relations, syllogisms, coding-decoding, series, data interpretation, para jumbles, and on "aptitude", "quants", "placement test", "TCS", "Infosys", "Wipro", "Cognizant".
 ---
 
 # Campus placement aptitude

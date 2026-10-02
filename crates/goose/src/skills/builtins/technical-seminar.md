@@ -1,6 +1,6 @@
 ---
 name: technical-seminar
-description: Prepare a technical seminar, paper presentation or project review, including slide structure, timing, speaker notes and likely examiner questions. Use for seminars, conference presentations and project vivas.
+description: Prepare a technical seminar, paper presentation or project review. Use this skill whenever the user asks for slides, a presentation, a seminar, or help with a project review or viva. Also trigger on "PPT", "how many slides", "speaker notes", "paper presentation", "technical seminar", "project review", "what will they ask me", "examiner questions", and on rehearsing or timing a talk.
 ---
 
 # Technical seminar and project review

@@ -1,6 +1,6 @@
 ---
 name: dsa-problem-solving
-description: Work through a data-structures or algorithms problem the way a campus placement interview expects. Use for coding-round questions, LeetCode-style problems, complexity analysis, or "how do I approach this problem".
+description: Work through a data structures or algorithms problem the way an interview expects. Use this skill whenever the user gives a coding problem, asks how to approach one, or asks about time or space complexity. Also trigger on arrays, strings, linked lists, stacks, queues, trees, graphs, heaps, hashing, recursion, dynamic programming, greedy, sliding window, two pointers, binary search, sorting, backtracking, and on "LeetCode", "coding round", "optimise this", "what is the complexity", "big O".
 ---
 
 # Solving a DSA problem for a placement round

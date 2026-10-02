@@ -1,6 +1,6 @@
 ---
 name: digital-design-hdl
-description: Write and explain Verilog or VHDL, and work through digital logic topics such as Boolean simplification, K-maps, combinational and sequential circuits, counters and state machines. Use for digital electronics coursework and HDL lab work.
+description: Write and explain Verilog or VHDL, and solve digital logic problems. Use this skill whenever the user asks about Verilog, VHDL, a testbench, or an FPGA. Also trigger on Karnaugh maps, K-map, Boolean simplification, sum of products, product of sums, flip flops, latches, counters, shift registers, multiplexers, decoders, state machines, Moore, Mealy, blocking versus non-blocking, and on "STA", "synthesisable", "digital electronics lab".
 ---
 
 # Digital design and HDL

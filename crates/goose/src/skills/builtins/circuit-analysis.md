@@ -1,6 +1,6 @@
 ---
 name: circuit-analysis
-description: Solve electrical and electronic circuits using nodal and mesh analysis, Thevenin and Norton equivalents, transients, AC phasors and op-amp configurations. Use for circuit theory, network analysis and analog electronics problems.
+description: Solve electrical and electronic circuits. Use this skill whenever the user asks to find a current, voltage, power or equivalent resistance, or mentions a circuit diagram. Also trigger on nodal analysis, mesh analysis, KCL, KVL, Thevenin, Norton, superposition, maximum power transfer, RC, RL and RLC transients, time constant, phasors, impedance, resonance, power factor, and on op-amp configurations (inverting, non-inverting, summing, integrator, differentiator).
 ---
 
 # Circuit analysis

@@ -1,6 +1,6 @@
 ---
 name: sql-and-databases
-description: Write and explain SQL queries, normalise a schema, or work through DBMS topics such as keys, joins, indexing, transactions and ACID. Use for database coursework, lab exercises, or query debugging.
+description: Write, fix or explain SQL, and work through DBMS coursework. Use this skill whenever the user asks for a query, pastes SQL, or mentions SELECT, JOIN, GROUP BY, a schema, keys, indexing, transactions or ACID. Also trigger on normalisation questions (1NF, 2NF, 3NF, BCNF, functional dependency, candidate key), on "write a query to...", "why is my query wrong", "ER diagram", "DBMS lab", and on any question naming MySQL, PostgreSQL, Oracle or SQLite.
 ---
 
 # SQL and database coursework

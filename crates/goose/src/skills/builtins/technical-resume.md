@@ -1,6 +1,6 @@
 ---
 name: technical-resume
-description: Write or review a one-page fresher resume for campus placements, and prepare project and internship descriptions that survive a recruiter screen. Use for resume writing, bullet points, or preparing to talk about a project in an interview.
+description: Write or review a one-page fresher resume for campus placements. Use this skill whenever the user asks about a resume, CV, or how to describe a project or internship. Also trigger on "review my resume", "bullet points", "ATS", "one page", "fresher resume", "what should I put", "how do I explain this project", "LinkedIn", "cover letter", and on preparing to talk about a project in an interview.
 ---
 
 # Fresher resume for campus placements

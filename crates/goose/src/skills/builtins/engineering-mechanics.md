@@ -1,6 +1,6 @@
 ---
 name: engineering-mechanics
-description: Solve statics and dynamics problems including free body diagrams, trusses, friction, centroids, moments of inertia, kinematics and work-energy methods. Use for engineering mechanics and strength of materials coursework.
+description: Solve statics and dynamics problems. Use this skill whenever the user asks about forces, equilibrium, a free body diagram, or a truss. Also trigger on reactions, supports, moments, couples, friction, ladders, wedges, centroid, centre of gravity, moment of inertia, parallel axis theorem, method of joints, method of sections, kinematics, projectile, work-energy, impulse-momentum, and on "strength of materials", "SFD", "BMD", "stress and strain".
 ---
 
 # Engineering mechanics
