@@ -145,8 +145,12 @@ jobs:
         run: |
           set -euo pipefail
           nupkg=$(ls *-full.nupkg)
-          # RELEASES is "<sha1> <filename> <bytes>", and is written with a BOM.
-          read -r _ manifest_name manifest_size < <(tr -d '\r\357\273\277' < RELEASES | head -1)
+          # RELEASES is "<sha1> <filename> <bytes>", written with a BOM and no
+          # trailing newline. `read` returns non-zero at EOF on an unterminated
+          # line, which under `set -e` aborts before anything is printed, so the
+          # fields are pulled with awk instead.
+          manifest_name=$(tr -d '\r\357\273\277' < RELEASES | awk 'NR==1{print $2}')
+          manifest_size=$(tr -d '\r\357\273\277' < RELEASES | awk 'NR==1{print $3}')
           actual_size=$(wc -c < "$nupkg" | tr -d ' ')
           echo "RELEASES names $manifest_name at $manifest_size bytes"
           echo "on disk        $nupkg at $actual_size bytes"
