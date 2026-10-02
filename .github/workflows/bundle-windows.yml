@@ -310,7 +310,21 @@ jobs:
           retention-days: 1
           overwrite: true
 
+      # 64-bit only, and the `if` is load-bearing. Squirrel names its output
+      # RELEASES, LoukriCoWork-<version>-full.nupkg and LoukriAICoWorkSetup.exe
+      # with no architecture anywhere in them. The release job collects every
+      # artifact with merge-multiple, so when both Windows builds upload this
+      # set the two flatten into one directory and whichever arrives last wins
+      # per file. v1.51.6 published the 32-bit RELEASES beside the 64-bit
+      # nupkg; Squirrel checks the package against the size and hash in
+      # RELEASES, found 201,773,531 against 248,295,727, and refused to
+      # install. 1.51.3 to 1.51.5 only looked fine because the race happened
+      # to land consistently.
+      #
+      # 32-bit is distributed as the portable zip, which is what
+      # tokenkey.in/download serves for it, so it needs no installer.
       - name: Upload installer (Squirrel)
+        if: inputs.arch != 'ia32'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: LoukriCoWork-win32-installer-${{ inputs.arch || 'x64' }}${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}

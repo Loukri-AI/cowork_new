@@ -136,6 +136,26 @@ jobs:
       - name: List release assets
         run: ls -la dist
 
+      # Squirrel refuses to install when the package does not match the size
+      # and hash recorded in RELEASES, and it says so only on the user's
+      # machine. v1.51.6 shipped a 32-bit RELEASES beside a 64-bit nupkg and
+      # every Windows 64-bit install failed. Catch that here instead.
+      - name: Verify the Squirrel manifest matches the package
+        working-directory: dist
+        run: |
+          set -euo pipefail
+          nupkg=$(ls *-full.nupkg)
+          # RELEASES is "<sha1> <filename> <bytes>", and is written with a BOM.
+          read -r _ manifest_name manifest_size < <(tr -d '\r\357\273\277' < RELEASES | head -1)
+          actual_size=$(wc -c < "$nupkg" | tr -d ' ')
+          echo "RELEASES names $manifest_name at $manifest_size bytes"
+          echo "on disk        $nupkg at $actual_size bytes"
+          if [ "$manifest_name" != "$nupkg" ] || [ "$manifest_size" != "$actual_size" ]; then
+            echo "::error::RELEASES does not describe $nupkg. Two architectures' Squirrel output have collided; the installer would fail on every Windows machine."
+            exit 1
+          fi
+          echo "manifest and package agree"
+
       - name: Create release
         env:
           GH_TOKEN: ${{ github.token }}
