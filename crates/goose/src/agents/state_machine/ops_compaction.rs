@@ -267,7 +267,10 @@ impl Operation<Session, GooseEffect> for CompactionOperation {
             // same condition holds forever.
             let already_compacted = messages
                 .iter()
-                .filter(|message| message.as_concat_text().contains(COMPACTION_DONE_NOTICE))
+                .filter(|message| {
+                    !message.is_agent_visible()
+                        && message.as_concat_text().contains(COMPACTION_DONE_NOTICE)
+                })
                 .count();
             if already_compacted >= MAX_PROACTIVE_COMPACTIONS {
                 return not_applicable();
@@ -323,7 +326,7 @@ impl Operation<Session, GooseEffect> for CompactionOperation {
         .await
         {
             Ok(result) => {
-                let compacted = result.conversation;
+                let mut compacted = result.conversation;
                 let usage = result.usage;
                 record_chat_usage(&span, &usage);
                 emit.message(Message::assistant().with_system_notification(
@@ -331,6 +334,28 @@ impl Operation<Session, GooseEffect> for CompactionOperation {
                     COMPACTION_DONE_NOTICE,
                 ))
                 .await;
+                // The emitted notice above goes to the reader, not into the
+                // conversation: this effect REPLACES the conversation with the
+                // summary, so anything emitted here is gone by the time this
+                // operation is asked to run again. A counting guard reading the
+                // emitted notice therefore always counts zero and never fires.
+                //
+                // So the record goes into the replacement itself, hidden from
+                // the model the same way a handled context error is. This is
+                // what makes the proactive cap above actually hold.
+                let mut record = Message::assistant().with_system_notification(
+                    SystemNotificationType::InlineMessage,
+                    COMPACTION_DONE_NOTICE,
+                );
+                record.metadata.agent_visible = false;
+                // Placed after the opening message rather than at the end, for
+                // two reasons: a trailing assistant message is stripped by
+                // conversation validation, which would lose the record; and
+                // `effective_role` reads the last message without regard to
+                // visibility, so parking it there would silently change the
+                // "last turn was the user's" test this operation depends on.
+                let at = compacted.messages().len().min(1);
+                compacted.messages_mut().insert(at, record);
                 applied([GooseEffect::CompactConversation {
                     conversation: compacted,
                     usage: Some(usage),
