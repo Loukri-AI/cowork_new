@@ -3,7 +3,7 @@ use async_trait::async_trait;
 use futures::StreamExt;
 use goose::agents::{Agent, AgentEvent, SessionConfig};
 use goose::config::GooseMode;
-use goose::conversation::message::{Message, MessageContent};
+use goose::conversation::message::{Message, MessageContent, MessageErrorKind};
 use goose::conversation::Conversation;
 use goose::providers::base::{
     stream_from_single_message, MessageStream, Provider, ProviderDef, ProviderMetadata,
@@ -22,20 +22,46 @@ struct MockCompactionProvider {
     /// Tracks whether compaction has occurred (for context limit recovery case)
     has_compacted: Arc<AtomicBool>,
     manages_own_context: bool,
+    /// Refuse every inference call as too large, compacted or not. Models the
+    /// case the recovery path exists for and cannot solve: what must be kept
+    /// is itself over the limit.
+    always_over_limit: bool,
+    /// What `get_context_limit` reports. Only the tests that drive the
+    /// proactive threshold need this small; everything else keeps a limit
+    /// large enough that the threshold is never met.
+    declared_context_limit: usize,
 }
+
+const DEFAULT_DECLARED_CONTEXT_LIMIT: usize = 128_000;
 
 impl MockCompactionProvider {
     fn new() -> Self {
         Self {
             has_compacted: Arc::new(AtomicBool::new(false)),
             manages_own_context: false,
+            always_over_limit: false,
+            declared_context_limit: DEFAULT_DECLARED_CONTEXT_LIMIT,
         }
     }
 
     fn context_owning() -> Self {
         Self {
-            has_compacted: Arc::new(AtomicBool::new(false)),
             manages_own_context: true,
+            ..Self::new()
+        }
+    }
+
+    fn always_over_limit() -> Self {
+        Self {
+            always_over_limit: true,
+            ..Self::new()
+        }
+    }
+
+    fn with_declared_context_limit(limit: usize) -> Self {
+        Self {
+            declared_context_limit: limit,
+            ..Self::new()
         }
     }
 
@@ -118,16 +144,18 @@ impl Provider for MockCompactionProvider {
         messages: &[Message],
         _tools: &[Tool],
     ) -> Result<MessageStream, ProviderError> {
-        // Check if this is a compaction call (message contains "summarize")
-        let is_compaction = messages.iter().any(|msg| {
-            msg.content.iter().any(|content| {
+        // A compaction call is the single summarisation prompt, the same shape
+        // `calculate_input_tokens` assumes. Matching "summarize" anywhere in the
+        // conversation instead would misread every turn that follows a
+        // compaction, because the summary prompt stays in the history.
+        let is_compaction = messages.len() == 1
+            && messages[0].content.iter().any(|content| {
                 if let MessageContent::Text(text) = content {
                     text.text.to_lowercase().contains("summarize")
                 } else {
                     false
                 }
-            })
-        });
+            });
 
         // Calculate realistic token counts based on actual content
         let input_tokens = self.calculate_input_tokens(system_prompt, messages);
@@ -136,8 +164,8 @@ impl Provider for MockCompactionProvider {
         // Simulate context limit: if input > 20k tokens and we haven't compacted yet, fail
         const CONTEXT_LIMIT: i32 = 20000;
         if !is_compaction
-            && input_tokens > CONTEXT_LIMIT
-            && !self.has_compacted.load(Ordering::SeqCst)
+            && (self.always_over_limit
+                || (input_tokens > CONTEXT_LIMIT && !self.has_compacted.load(Ordering::SeqCst)))
         {
             return Err(ProviderError::ContextLengthExceeded(format!(
                 "Context limit exceeded: {} > {}",
@@ -184,6 +212,10 @@ impl Provider for MockCompactionProvider {
 
     fn get_name(&self) -> &str {
         "mock-compaction"
+    }
+
+    async fn get_context_limit(&self, _model: &str, override_limit: Option<usize>) -> usize {
+        override_limit.unwrap_or(self.declared_context_limit)
     }
 }
 
@@ -794,8 +826,11 @@ async fn test_context_limit_recovery_compaction() -> Result<()> {
 
     // After compaction, the retry only sees agent-visible messages:
     // Input: system (6000) + summary (~100) + continuation (~100) + user message (~100) = ~6300
-    // Output: 200 (mock detects "summarized" in continuation as compaction)
-    // Total: ~6500
+    // Output: 100, an ordinary reply. It read 200 until the mock stopped
+    // treating every turn after a compaction as another compaction: the
+    // summarisation prompt stays in the history, so matching "summarize"
+    // anywhere matched for ever after.
+    // Total: ~6400
     assert!(
         (6000..=6600).contains(&final_input),
         "Final input should reflect retry with agent-visible messages (~6300). Got: {}",
@@ -804,8 +839,8 @@ async fn test_context_limit_recovery_compaction() -> Result<()> {
 
     assert_eq!(
         final_output,
-        Some(200),
-        "Final output should be 200 (mock detects continuation as compaction). Got: {:?}",
+        Some(100),
+        "Final output should be an ordinary reply, not a second compaction. Got: {:?}",
         final_output
     );
 
@@ -818,12 +853,12 @@ async fn test_context_limit_recovery_compaction() -> Result<()> {
     // Accumulated tokens should include all operations:
     // - Initial: 1000
     // - Compaction: ~6400 input (mock uses system_prompt.len()/4) + 200 output = ~6600
-    // - Reply: ~6500 input + 200 output = ~6700
-    // Total: 1000 + 6600 + 6700 = ~14300
+    // - Reply: ~6400 input + 100 output = ~6500
+    // Total: 1000 + 6600 + 6500 = ~14100
     let accumulated = updated_session.accumulated_usage.total_tokens.unwrap();
     assert!(
         (13000..=16000).contains(&accumulated),
-        "Accumulated should be ~14300 (initial + compaction + reply). Got: {}",
+        "Accumulated should be ~14100 (initial + compaction + reply). Got: {}",
         accumulated
     );
 
@@ -832,6 +867,169 @@ async fn test_context_limit_recovery_compaction() -> Result<()> {
         .conversation
         .expect("Session should have conversation");
     assert_conversation_compacted(&updated_conversation);
+
+    Ok(())
+}
+
+/// BUG-002: the app sat on "CoWork is working on it" for ever once a
+/// conversation grew past what compaction could rescue. The turn did end, but
+/// it ended on a plain inline notice, and the desktop only stops its indicator
+/// for a typed error. The assertion here is the type, not the words.
+#[tokio::test]
+async fn a_context_limit_compaction_cannot_fix_ends_the_turn_with_a_typed_error() -> Result<()> {
+    let temp_dir = TempDir::new()?;
+    let agent = Agent::new();
+
+    let messages = vec![
+        Message::user().with_text("Hello"),
+        Message::assistant().with_text("Hi there"),
+    ];
+    let session =
+        setup_test_session(&agent, &temp_dir, "context-limit-unfixable", messages).await?;
+
+    agent
+        .update_provider(
+            Arc::new(MockCompactionProvider::always_over_limit()),
+            ModelConfig::new("mock-model"),
+            &session.id,
+        )
+        .await?;
+
+    let reply_stream = agent
+        .reply(
+            Message::user().with_text("Tell me more"),
+            SessionConfig {
+                id: session.id.clone(),
+                schedule_id: None,
+                max_turns: None,
+                retry_config: None,
+            },
+            goose::agents::state_machine::enabled(),
+            None,
+        )
+        .await?;
+    tokio::pin!(reply_stream);
+
+    let mut typed_error = None;
+    while let Some(event) = reply_stream.next().await {
+        if let Ok(AgentEvent::Message(message)) = event {
+            if let Some(kind) = message.error_kind() {
+                typed_error = Some(kind);
+            }
+        }
+    }
+
+    assert_eq!(
+        typed_error,
+        Some(MessageErrorKind::ContextLengthExceeded),
+        "the turn must end on a typed context-length error, which is the only \
+         thing that stops the desktop's working indicator"
+    );
+
+    let stored = agent
+        .config
+        .session_manager
+        .get_session(&session.id, true)
+        .await?;
+    let conversation = stored.conversation.expect("session keeps its conversation");
+    assert!(
+        conversation
+            .messages()
+            .iter()
+            .any(|message| message.error_kind() == Some(MessageErrorKind::ContextLengthExceeded)),
+        "the reason the turn stopped must survive a reload, like every other terminal message"
+    );
+
+    Ok(())
+}
+
+/// BUG-005: pasting ~30,000 words produced "Exceeded ... Compaction complete"
+/// over and over and never an answer. Compaction keeps the newest user
+/// message, so when that message is itself the problem every pass frees
+/// nothing and the next turn meets the same threshold. One fruitless pass is
+/// enough to know that.
+#[tokio::test]
+async fn compaction_that_frees_nothing_stops_instead_of_repeating() -> Result<()> {
+    let temp_dir = TempDir::new()?;
+    let agent = Agent::new();
+
+    let session = setup_test_session(
+        &agent,
+        &temp_dir,
+        "compaction-no-progress",
+        vec![
+            Message::user().with_text("Hello"),
+            Message::assistant().with_text("Hi there"),
+        ],
+    )
+    .await?;
+
+    // Over the 80% mark of the limit the provider declares below, so the
+    // proactive pass runs before the turn starts.
+    agent
+        .config
+        .session_manager
+        .update(&session.id)
+        .usage(Usage::new(Some(9000), Some(1000), Some(10000)))
+        .apply()
+        .await?;
+
+    agent
+        .update_provider(
+            Arc::new(MockCompactionProvider::with_declared_context_limit(12_000)),
+            ModelConfig::new("mock-model"),
+            &session.id,
+        )
+        .await?;
+
+    // The paste. Large enough that keeping it costs more than the whole
+    // conversation did before compaction ran.
+    let paste = "lorem ipsum dolor sit amet ".repeat(4_000);
+
+    let reply_stream = agent
+        .reply(
+            Message::user().with_text(paste),
+            SessionConfig {
+                id: session.id.clone(),
+                schedule_id: None,
+                max_turns: None,
+                retry_config: None,
+            },
+            goose::agents::state_machine::enabled(),
+            None,
+        )
+        .await?;
+    tokio::pin!(reply_stream);
+
+    let mut compaction_notices = 0usize;
+    let mut typed_error = None;
+    while let Some(event) = reply_stream.next().await {
+        if let Ok(AgentEvent::Message(message)) = event {
+            compaction_notices += message
+                .content
+                .iter()
+                .filter(|content| match content {
+                    MessageContent::SystemNotification(notification) => {
+                        notification.msg.contains("Compaction complete")
+                    }
+                    _ => false,
+                })
+                .count();
+            if let Some(kind) = message.error_kind() {
+                typed_error = Some(kind);
+            }
+        }
+    }
+
+    assert_eq!(
+        compaction_notices, 1,
+        "compaction must be attempted once and then given up on, not repeated"
+    );
+    assert_eq!(
+        typed_error,
+        Some(MessageErrorKind::ContextLengthExceeded),
+        "the user must be told the chat cannot continue, rather than left waiting"
+    );
 
     Ok(())
 }

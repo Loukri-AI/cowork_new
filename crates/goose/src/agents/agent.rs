@@ -52,8 +52,8 @@ use crate::context_mgmt::{
     check_if_compaction_needed, compact_messages, DEFAULT_COMPACTION_THRESHOLD,
 };
 use crate::conversation::message::{
-    ActionRequiredData, InferenceMetadata, Message, MessageContent, MessageUsage, ProviderMetadata,
-    SystemNotificationType,
+    ActionRequiredData, InferenceMetadata, Message, MessageContent, MessageErrorKind, MessageUsage,
+    ProviderMetadata, SystemNotificationType,
 };
 use crate::conversation::{debug_conversation_fix, fix_conversation, Conversation};
 use crate::permission::permission_inspector::PermissionInspector;
@@ -86,6 +86,12 @@ const DEFAULT_MAX_TURNS: u32 = 1000;
 const DEFAULT_STOP_HOOK_BLOCK_CAP: u32 = 8;
 const COMPACTION_PROGRESS_TEXT: &str = "goose is compacting the conversation...";
 const MAX_EMPTY_TURN_RETRIES: u32 = 3;
+/// Said when compaction has run and the prompt still does not fit. Phrased as
+/// an ending rather than a suggestion to retry, because retrying sends the same
+/// oversized conversation back and lands here again.
+const CONTEXT_LIMIT_EXHAUSTED_MESSAGE: &str =
+    "This conversation has reached the model's context limit, and compacting it did not free \
+     enough room to continue. Start a new chat to carry on.";
 const EMPTY_TURN_MESSAGE: &str =
     "The model returned an empty response. Please resend your message to continue.";
 
@@ -2392,6 +2398,29 @@ impl Agent {
                             )
                         );
 
+                        // Compaction keeps the newest user message, so a single
+                        // very large paste survives every pass. When the summary
+                        // comes back no smaller than what went into it, the next
+                        // turn meets the same threshold and compacts again: the
+                        // chat fills with "Exceeded ... Compaction complete" and
+                        // never answers. One pass that frees nothing is enough to
+                        // know the next will free nothing either.
+                        if let Some(before) = session.usage.total_tokens {
+                            if before > 0
+                                && compaction.retained_context_tokens as i64 >= before as i64
+                            {
+                                let message = Message::assistant().with_error(
+                                    MessageErrorKind::ContextLengthExceeded,
+                                    CONTEXT_LIMIT_EXHAUSTED_MESSAGE,
+                                );
+                                session_manager
+                                    .add_message(&session_config.id, &message)
+                                    .await?;
+                                yield AgentEvent::Message(message);
+                                return;
+                            }
+                        }
+
                         compacted_conversation
                     }
                     Err(e) => {
@@ -3129,12 +3158,23 @@ impl Agent {
 
                             if compaction_attempts >= 2 {
                                 error!("Context limit exceeded after compaction - prompt too large");
-                                yield AgentEvent::Message(
-                                    Message::assistant().with_system_notification(
-                                        SystemNotificationType::InlineMessage,
-                                        "Unable to continue: Context limit still exceeded after compaction. Try using a shorter message, a model with a larger context window, or start a new session."
-                                    )
-                                );
+                                // A typed error, not an inline notice. The desktop clears its
+                                // "working on it" indicator when the prompt settles, and only a
+                                // typed error reaches that path; an InlineMessage left the turn
+                                // looking ordinary and the spinner running until the app restarted.
+                                // Persisted for the same reason every other terminal message is:
+                                // so reopening the session still shows why it stopped.
+                                let message = persist_and_push_message_with_id(
+                                    &session_manager,
+                                    &session_config.id,
+                                    &mut conversation,
+                                    Message::assistant().with_error(
+                                        MessageErrorKind::ContextLengthExceeded,
+                                        CONTEXT_LIMIT_EXHAUSTED_MESSAGE,
+                                    ),
+                                )
+                                .await?;
+                                yield AgentEvent::Message(message);
                                 break;
                             }
 
